@@ -1,22 +1,22 @@
-# @sdaas/schema-gen
+# @certifieddata/schema-gen
 
-Generate SDAAS.io dataset manifest scaffolding from field maps.
+Generate CertifiedData.io dataset manifest scaffolding from field maps.
 
-Use this to produce the schema portion of a manifest before uploading to SDAAS.io
+Use this to produce the schema portion of a manifest before uploading to CertifiedData.io
 for certification. Does NOT issue or sign certificates.
 
 ## Install
 
 ```bash
-npm install @sdaas/schema-gen
+npm install @certifieddata/schema-gen
 # or globally for CLI use:
-npm install -g @sdaas/schema-gen
+npm install -g @certifieddata/schema-gen
 ```
 
 ## Library usage
 
 ```ts
-import { generateManifestScaffold } from "@sdaas/schema-gen";
+import { generateManifestScaffold } from "@certifieddata/schema-gen";
 
 const scaffold = generateManifestScaffold({
   datasetName: "transactions",

@@ -6,7 +6,7 @@
     "certificate_type": "GENESIS",
     "issued_at": "2026-02-22T00:00:00.000Z",
     "issuer": {
-      "name": "SDAAS.io",
+      "name": "CertifiedData.io",
       "environment": "development",
       "signing_key_id": "test-key-fixture-1",
       "signature_alg": "Ed25519"
@@ -20,7 +20,7 @@
         "bucket": "certificates",
         "path": "certs/cert_demo_fixture_001.pdf"
       },
-      "verification_url": "https://sdaas.io/verify/cert_demo_fixture_001"
+      "verification_url": "https://certifieddata.io/verify/cert_demo_fixture_001"
     },
     "hashes": {
       "certificate_payload_sha256": "371f8abc844827565efb4f88e60a7973f176f772b62f0efdd56571757619b930",

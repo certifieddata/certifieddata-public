@@ -1,5 +1,5 @@
 /**
- * SDAAS.io certificate manifest envelope.
+ * CertifiedData.io certificate manifest envelope.
  *
  * Returned by:  GET /api/cert/:id/manifest
  *               Accept: application/sdaas.manifest+json
@@ -32,7 +32,7 @@ export interface SdaasCertPayload {
   certificate_type: "GENESIS" | "REPLICA";
   issued_at: string;            // ISO 8601
   issuer: {
-    name: string;               // "SDAAS.io"
+    name: string;               // "CertifiedData.io"
     environment: string;        // "production" | "development"
     signing_key_id: string;
     signature_alg: string;

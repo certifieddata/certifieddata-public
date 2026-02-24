@@ -1,20 +1,20 @@
 /**
- * @sdaas/verify
+ * @certifieddata/verify
  *
- * Verify SDAAS.io certificate manifests independently.
+ * Verify CertifiedData.io certificate manifests independently.
  *
  * Quick start:
  *
- *   import { verifyManifest } from "@sdaas/verify";
+ *   import { verifyManifest } from "@certifieddata/verify";
  *
- *   // Fetch from SDAAS API
+ *   // Fetch from CertifiedData API
  *   const envelope = await fetch(
- *     "https://sdaas.io/api/cert/<CERT_ID>/manifest",
+ *     "https://certifieddata.io/api/cert/<CERT_ID>/manifest",
  *     { headers: { Accept: "application/sdaas.manifest+json" } }
  *   ).then(r => r.json());
  *
  *   // Fetch public key
- *   const keys = await fetch("https://sdaas.io/.well-known/signing-keys.json")
+ *   const keys = await fetch("https://certifieddata.io/.well-known/signing-keys.json")
  *     .then(r => r.json());
  *   const pubKey = keys.keys.find(k => k.key_id === envelope.signature.key_id);
  *
@@ -32,7 +32,7 @@ export type { SdaasManifestEnvelope, SdaasCertPayload, SdaasSignature, VerifyRes
 export { canonicalPayloadBytes } from "./canon.js";
 
 /**
- * Verify a SDAAS certificate manifest envelope.
+ * Verify a CertifiedData certificate manifest envelope.
  *
  * @param envelope   Parsed JSON from GET /api/cert/:id/manifest
  * @param publicKeyPem  PEM-formatted Ed25519 public key (from /.well-known/signing-keys.json)

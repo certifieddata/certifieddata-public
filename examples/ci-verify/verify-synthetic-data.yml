@@ -43,13 +43,13 @@ jobs:
           SDAAS_EXPECTED_KEY_ID: ${{ secrets.SDAAS_EXPECTED_KEY_ID }}
         run: node verify.mjs
 
-      # Option B: Use @sdaas/sdk (uncomment if you prefer the full SDK)
+      # Option B: Use @certifieddata/sdk (uncomment if you prefer the full SDK)
       # - name: Install SDK
-      #   run: npm install @sdaas/sdk
+      #   run: npm install @certifieddata/sdk
       # - name: Verify via SDK
       #   run: |
       #     node --input-type=module <<'EOF'
-      #     import { SdaasClient } from "@sdaas/sdk";
+      #     import { SdaasClient } from "@certifieddata/sdk";
       #     const client = new SdaasClient();
       #     const { result } = await client.fetchAndVerify(process.env.SDAAS_CERT_ID);
       #     console.log(result);

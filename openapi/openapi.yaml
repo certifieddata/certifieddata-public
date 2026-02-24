@@ -10,7 +10,7 @@ info:
 
     1. Fetch the manifest envelope from `/api/cert/{id}/manifest`
     2. Fetch the public key from `/.well-known/signing-keys.json`
-    3. Verify the Ed25519 signature using `@sdaas/verify`
+    3. Verify the Ed25519 signature using `@certifieddata/verify`
 
     Canonicalization rule: `json-stable-stringify(stripUndefined(payload))` → UTF-8 bytes
   contact:
@@ -84,7 +84,7 @@ paths:
         - A `checked_at` timestamp
 
         Note: This is the server's verification result. For independent verification,
-        use the manifest endpoint + `@sdaas/verify`.
+        use the manifest endpoint + `@certifieddata/verify`.
       parameters:
         - name: id
           in: path

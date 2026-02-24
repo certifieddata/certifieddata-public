@@ -1,7 +1,7 @@
 {
-  "name": "@sdaas/schema-gen",
+  "name": "@certifieddata/schema-gen",
   "version": "0.1.0",
-  "description": "Generate SDAAS.io manifest scaffolding from field maps or JSON schemas",
+  "description": "Generate CertifiedData.io manifest scaffolding from field maps or JSON schemas",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

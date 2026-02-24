@@ -1,7 +1,7 @@
 {
-  "name": "@sdaas/sdk",
+  "name": "@certifieddata/sdk",
   "version": "0.1.0",
-  "description": "SDAAS.io client SDK — fetch manifests, verify certificates, check signing keys",
+  "description": "CertifiedData.io client SDK — fetch manifests, verify certificates, check signing keys",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "lint": "node -e \"process.exit(0)\""
   },
   "dependencies": {
-    "@sdaas/verify": "workspace:*"
+    "@certifieddata/verify": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

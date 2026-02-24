@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in contributing to `sdaas-public`. This repository contains open-source verification tools for the [SDAAS.io](https://sdaas.io) platform.
+Thank you for your interest in contributing to `sdaas-public`. This repository contains open-source verification tools for the [CertifiedData.io](https://certifieddata.io) platform.
 
 ---
 
@@ -8,10 +8,10 @@ Thank you for your interest in contributing to `sdaas-public`. This repository c
 
 | Package | Purpose |
 |---------|---------|
-| `@sdaas/verify` | Core Ed25519 signature verification logic |
-| `@sdaas/sdk` | High-level client (`fetchAndVerify`) |
-| `@sdaas/schema-gen` | Certificate JSON schema and codegen utilities |
-| `@sdaas/pii-scan` | Local PII risk scanner for datasets |
+| `@certifieddata/verify` | Core Ed25519 signature verification logic |
+| `@certifieddata/sdk` | High-level client (`fetchAndVerify`) |
+| `@certifieddata/schema-gen` | Certificate JSON schema and codegen utilities |
+| `@certifieddata/pii-scan` | Local PII risk scanner for datasets |
 | `examples/` | Reference implementations (Node.js, Python, CI) |
 | `docs/` | Technical documentation |
 
@@ -19,7 +19,7 @@ Thank you for your interest in contributing to `sdaas-public`. This repository c
 
 ## What does NOT live here
 
-- The SDAAS.io platform backend (closed source)
+- The CertifiedData.io platform backend (closed source)
 - The synthetic data generation models
 - Any private keys or signing secrets
 - Customer data or certificates
@@ -70,7 +70,7 @@ Open a GitHub issue with:
 ### Code style
 
 - TypeScript for all packages
-- No external runtime dependencies in `@sdaas/verify` (keep it zero-dep for verifiability)
+- No external runtime dependencies in `@certifieddata/verify` (keep it zero-dep for verifiability)
 - Follow the existing patterns in each package
 
 ---
@@ -81,19 +81,19 @@ We welcome contributions that improve:
 - Verification correctness and edge case handling
 - Additional language examples (Go, Rust, Java, etc.)
 - Documentation clarity
-- PII detection patterns in `@sdaas/pii-scan`
+- PII detection patterns in `@certifieddata/pii-scan`
 - CI/CD integration examples
 
 We are unlikely to accept contributions that:
 - Change the core `cert.v1` schema in a breaking way
-- Add telemetry or network calls to `@sdaas/pii-scan`
-- Depend on the closed-source SDAAS.io backend
+- Add telemetry or network calls to `@certifieddata/pii-scan`
+- Depend on the closed-source CertifiedData.io backend
 
 ---
 
 ## Security issues
 
-Do not open a public issue for security vulnerabilities. Email **security@sdaas.io** instead. See [SECURITY.md](./SECURITY.md).
+Do not open a public issue for security vulnerabilities. Email **security@certifieddata.io** instead. See [SECURITY.md](./SECURITY.md).
 
 ---
 

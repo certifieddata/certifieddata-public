@@ -2,7 +2,7 @@
 
 These fixtures use a **test-only Ed25519 keypair** (`keypair.test.json`).
 This keypair is NOT used in production. It exists solely to let you run
-verification examples locally without hitting the SDAAS API.
+verification examples locally without hitting the CertifiedData API.
 
 ## Files
 
@@ -43,5 +43,5 @@ and `json-stable-stringify` sorts object keys alphabetically at every level.
 
 For live certificates, fetch the public key from:
 ```
-https://sdaas.io/.well-known/signing-keys.json
+https://certifieddata.io/.well-known/signing-keys.json
 ```

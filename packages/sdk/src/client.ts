@@ -1,9 +1,9 @@
-import type { SdaasManifestEnvelope, VerifyResult } from "@sdaas/verify";
-import { verifyManifest } from "@sdaas/verify";
+import type { SdaasManifestEnvelope, VerifyResult } from "@certifieddata/verify";
+import { verifyManifest } from "@certifieddata/verify";
 import type { SigningKeysResponse, VerifyStatusResponse } from "./types.js";
 
 export class SdaasClient {
-  constructor(private baseUrl: string = "https://sdaas.io") {
+  constructor(private baseUrl: string = "https://certifieddata.io") {
     // Remove trailing slash
     this.baseUrl = baseUrl.replace(/\/$/, "");
   }
@@ -60,7 +60,7 @@ export class SdaasClient {
    * against the published public key.
    *
    * This performs full client-side cryptographic verification —
-   * no trust in SDAAS server response required.
+   * no trust in CertifiedData server response required.
    */
   async fetchAndVerify(certId: string): Promise<{
     manifest: SdaasManifestEnvelope;

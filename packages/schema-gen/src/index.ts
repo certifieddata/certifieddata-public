@@ -1,14 +1,14 @@
 /**
- * @sdaas/schema-gen
+ * @certifieddata/schema-gen
  *
- * Generate SDAAS.io dataset manifest scaffolding from a field map.
+ * Generate CertifiedData.io dataset manifest scaffolding from a field map.
  *
  * This does NOT issue or sign certificates. It produces the schema portion
- * of a manifest that you upload to SDAAS.io for certification.
+ * of a manifest that you upload to CertifiedData.io for certification.
  *
  * Quick start:
  *
- *   import { generateManifestScaffold } from "@sdaas/schema-gen";
+ *   import { generateManifestScaffold } from "@certifieddata/schema-gen";
  *
  *   const scaffold = generateManifestScaffold({
  *     datasetName: "transactions",

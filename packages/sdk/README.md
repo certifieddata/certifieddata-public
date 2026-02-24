@@ -1,23 +1,23 @@
-# @sdaas/sdk
+# @certifieddata/sdk
 
-SDAAS.io client SDK. Fetch manifests, verify certificates, and check signing keys.
+CertifiedData.io client SDK. Fetch manifests, verify certificates, and check signing keys.
 
-Wraps `@sdaas/verify` with fetch helpers and key resolution.
+Wraps `@certifieddata/verify` with fetch helpers and key resolution.
 
 ## Install
 
 ```bash
-npm install @sdaas/sdk
+npm install @certifieddata/sdk
 # or
-pnpm add @sdaas/sdk
+pnpm add @certifieddata/sdk
 ```
 
 ## Quick start
 
 ```ts
-import { SdaasClient } from "@sdaas/sdk";
+import { SdaasClient } from "@certifieddata/sdk";
 
-const client = new SdaasClient("https://sdaas.io");
+const client = new SdaasClient("https://certifieddata.io");
 
 // Fetch + independently verify in one call
 const { manifest, result } = await client.fetchAndVerify("<CERT_ID>");
@@ -29,7 +29,7 @@ console.log(result);
 
 ### `new SdaasClient(baseUrl?)`
 
-Creates a client. `baseUrl` defaults to `"https://sdaas.io"`.
+Creates a client. `baseUrl` defaults to `"https://certifieddata.io"`.
 
 ### `client.fetchManifest(certId)`
 
@@ -70,10 +70,10 @@ const { manifest, result } = await client.fetchAndVerify("<CERT_ID>");
 
 ## Re-exports
 
-`@sdaas/sdk` re-exports `verifyManifest` and types from `@sdaas/verify`:
+`@certifieddata/sdk` re-exports `verifyManifest` and types from `@certifieddata/verify`:
 
 ```ts
-import { verifyManifest, SdaasManifestEnvelope } from "@sdaas/sdk";
+import { verifyManifest, SdaasManifestEnvelope } from "@certifieddata/sdk";
 ```
 
 ## License

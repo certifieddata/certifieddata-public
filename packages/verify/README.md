@@ -1,30 +1,30 @@
-# @sdaas/verify
+# @certifieddata/verify
 
-Independently verify SDAAS.io certificate manifests using Ed25519.
+Independently verify CertifiedData.io certificate manifests using Ed25519.
 
 No server trust required. Works offline once you have the manifest and public key.
 
 ## Install
 
 ```bash
-npm install @sdaas/verify
+npm install @certifieddata/verify
 # or
-pnpm add @sdaas/verify
+pnpm add @certifieddata/verify
 ```
 
 ## Quick start
 
 ```ts
-import { verifyManifest } from "@sdaas/verify";
+import { verifyManifest } from "@certifieddata/verify";
 
-// 1. Fetch the manifest envelope from SDAAS
+// 1. Fetch the manifest envelope from CertifiedData
 const envelope = await fetch(
-  "https://sdaas.io/api/cert/<CERT_ID>/manifest",
+  "https://certifieddata.io/api/cert/<CERT_ID>/manifest",
   { headers: { Accept: "application/sdaas.manifest+json" } }
 ).then(r => r.json());
 
 // 2. Fetch the public signing key
-const { keys } = await fetch("https://sdaas.io/.well-known/signing-keys.json")
+const { keys } = await fetch("https://certifieddata.io/.well-known/signing-keys.json")
   .then(r => r.json());
 const key = keys.find(k => k.key_id === envelope.signature.key_id);
 
@@ -79,7 +79,7 @@ Canonicalization: `json-stable-stringify(stripUndefined(payload))` → UTF-8 byt
     "certificate_id": "...",
     "certificate_type": "GENESIS",
     "issued_at": "2026-02-22T00:00:00.000Z",
-    "issuer": { "name": "SDAAS.io", "environment": "production", ... },
+    "issuer": { "name": "CertifiedData.io", "environment": "production", ... },
     "subject": { "dataset_name": "my_dataset" },
     "hashes": {
       "certificate_payload_sha256": "<hex>",

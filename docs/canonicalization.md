@@ -55,11 +55,11 @@ The resulting JSON string is encoded to `Uint8Array` using UTF-8. This byte sequ
 
 ## Why not RFC 8785 (JCS)?
 
-RFC 8785 (JSON Canonicalization Scheme) is more rigorous but requires a dedicated library. The SDAAS.io format uses `json-stable-stringify` because:
+RFC 8785 (JSON Canonicalization Scheme) is more rigorous but requires a dedicated library. The CertifiedData.io format uses `json-stable-stringify` because:
 
 - It is simpler to implement independently in any language
 - It is already the de facto standard for deterministic JSON in the JS/TS ecosystem
-- The public verification packages (`@sdaas/verify`, Python verifier) implement this same algorithm
+- The public verification packages (`@certifieddata/verify`, Python verifier) implement this same algorithm
 
 If RFC 8785 compatibility is needed in a future schema version, it will be introduced with a new `schema_version` field value.
 
@@ -110,4 +110,4 @@ When implementing your own verifier, confirm:
 
 - [Manifest Format](./manifest-format.md)
 - [Key Rotation](./key-rotation.md)
-- [`@sdaas/verify` package](../packages/verify/)
+- [`@certifieddata/verify` package](../packages/verify/)

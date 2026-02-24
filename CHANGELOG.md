@@ -15,18 +15,18 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
-- `@sdaas/verify` — Ed25519 signature verification + payload canonicalization
+- `@certifieddata/verify` — Ed25519 signature verification + payload canonicalization
   - `verifyManifest(envelope, publicKeyPem, expectedKeyId?)` — full verification flow
   - `canonicalPayloadBytes(payload)` — standalone canonicalization (json-stable-stringify + strip undefined)
   - TypeScript types: `SdaasManifestEnvelope`, `SdaasCertPayload`, `SdaasSignature`, `VerifyResult`
 
-- `@sdaas/sdk` — SDAAS.io client SDK
+- `@certifieddata/sdk` — CertifiedData.io client SDK
   - `SdaasClient.fetchManifest(certId)` — fetch signed envelope from API
   - `SdaasClient.fetchVerifyStatus(certId)` — fetch server-side verification status
   - `SdaasClient.fetchSigningKeys()` — fetch active public keys from `/.well-known/signing-keys.json`
   - `SdaasClient.fetchAndVerify(certId)` — full fetch + local cryptographic verification in one call
 
-- `@sdaas/schema-gen` — Dataset manifest scaffolding CLI + library
+- `@certifieddata/schema-gen` — Dataset manifest scaffolding CLI + library
   - `generateManifestScaffold(input)` — generate manifest scaffold from field map
   - `sdaas-schema-gen` CLI with `--name`, `--fields`, `--rows`, `--out` flags
 

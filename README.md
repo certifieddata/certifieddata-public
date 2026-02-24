@@ -1,6 +1,6 @@
 # sdaas-public
 
-Verification and integration toolkit for [SDAAS.io](https://sdaas.io) synthetic dataset certificates.
+Verification and integration toolkit for [CertifiedData.io](https://certifieddata.io) synthetic dataset certificates.
 
 Independent Ed25519 verification — no API key required, no server trust required.
 
@@ -10,32 +10,32 @@ Independent Ed25519 verification — no API key required, no server trust requir
 
 | Package | Install | Description |
 |---------|---------|-------------|
-| [`@sdaas/verify`](packages/verify/) | `npm i @sdaas/verify` | Ed25519 signature verification + payload canonicalization |
-| [`@sdaas/sdk`](packages/sdk/) | `npm i @sdaas/sdk` | Fetch + verify in one call |
-| [`@sdaas/schema-gen`](packages/schema-gen/) | `npm i @sdaas/schema-gen` | Dataset manifest scaffolding CLI |
+| [`@certifieddata/verify`](packages/verify/) | `npm i @certifieddata/verify` | Ed25519 signature verification + payload canonicalization |
+| [`@certifieddata/sdk`](packages/sdk/) | `npm i @certifieddata/sdk` | Fetch + verify in one call |
+| [`@certifieddata/schema-gen`](packages/schema-gen/) | `npm i @certifieddata/schema-gen` | Dataset manifest scaffolding CLI |
 
 ---
 
 ## Verify a certificate
 
 ```ts
-import { SdaasClient } from "@sdaas/sdk";
+import { SdaasClient } from "@certifieddata/sdk";
 
 const { result } = await new SdaasClient().fetchAndVerify("CERT_ID");
 console.log(result);
 // { verified: true, alg: "Ed25519", key_id: "ed25519-prod-2025-02" }
 ```
 
-Or with just `@sdaas/verify` and your own fetch:
+Or with just `@certifieddata/verify` and your own fetch:
 
 ```ts
-import { verifyManifest } from "@sdaas/verify";
+import { verifyManifest } from "@certifieddata/verify";
 
-const envelope = await fetch("https://sdaas.io/api/cert/CERT_ID/manifest", {
+const envelope = await fetch("https://certifieddata.io/api/cert/CERT_ID/manifest", {
   headers: { Accept: "application/sdaas.manifest+json" },
 }).then(r => r.json());
 
-const { keys } = await fetch("https://sdaas.io/.well-known/signing-keys.json").then(r => r.json());
+const { keys } = await fetch("https://certifieddata.io/.well-known/signing-keys.json").then(r => r.json());
 const key = keys.find(k => k.key_id === envelope.signature.key_id);
 
 const result = await verifyManifest(envelope, key.public_key_pem);
@@ -47,7 +47,7 @@ const result = await verifyManifest(envelope, key.public_key_pem);
 
 ```bash
 pip install cryptography requests
-SDAAS_CERT_ID=<cert-id> python examples/python-verify/verify.py
+CertifiedData_CERT_ID=<cert-id> python examples/python-verify/verify.py
 ```
 
 See [`examples/python-verify/`](examples/python-verify/) for library usage and Jupyter notebook examples.
@@ -59,9 +59,9 @@ See [`examples/python-verify/`](examples/python-verify/) for library usage and J
 Add certificate verification to a GitHub Actions pipeline before using a synthetic dataset:
 
 ```yaml
-- name: Verify SDAAS Certificate
+- name: Verify CertifiedData Certificate
   env:
-    SDAAS_CERT_ID: ${{ secrets.SDAAS_CERT_ID }}
+    CertifiedData_CERT_ID: ${{ secrets.CertifiedData_CERT_ID }}
   run: |
     curl -fsSL https://raw.githubusercontent.com/Sdaas-io/sdaas-public/main/examples/ci-verify/verify.mjs -o verify.mjs
     node verify.mjs
@@ -73,8 +73,8 @@ Full workflow template: [`examples/ci-verify/verify-synthetic-data.yml`](example
 
 ## How it works
 
-Certificates are signed with an Ed25519 private key held by SDAAS.io infrastructure.
-The public key is published at `https://sdaas.io/.well-known/signing-keys.json`.
+Certificates are signed with an Ed25519 private key held by CertifiedData.io infrastructure.
+The public key is published at `https://certifieddata.io/.well-known/signing-keys.json`.
 
 **Signing input:** `json-stable-stringify(stripUndefined(payload))` → UTF-8 bytes
 
@@ -109,7 +109,7 @@ cd examples/node-verify && node index.mjs valid
 
 ## Security
 
-Report vulnerabilities to **security@sdaas.io** — see [SECURITY.md](SECURITY.md).
+Report vulnerabilities to **security@certifieddata.io** — see [SECURITY.md](SECURITY.md).
 
 ---
 

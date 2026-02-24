@@ -1,5 +1,5 @@
 /**
- * Canonicalization for SDAAS manifest payloads.
+ * Canonicalization for CertifiedData manifest payloads.
  *
  * Matches the server-side implementation exactly:
  *   1. Strip undefined values (recursively)

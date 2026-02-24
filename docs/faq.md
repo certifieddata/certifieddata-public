@@ -4,13 +4,13 @@
 
 ## General
 
-### What does SDAAS.io certify?
+### What does CertifiedData.io certify?
 
-SDAAS.io certifies that a synthetic dataset was generated on the SDAAS.io platform and that no real personal data was used in its generation. The certificate is a cryptographically signed attestation of:
+CertifiedData.io certifies that a synthetic dataset was generated on the CertifiedData.io platform and that no real personal data was used in its generation. The certificate is a cryptographically signed attestation of:
 
 - The dataset name, row count, column count, and format
 - The generation method (e.g. CTGAN)
-- The platform that generated it (SDAAS.io)
+- The platform that generated it (CertifiedData.io)
 - The timestamp of issuance
 
 The certificate does **not** certify statistical accuracy, fitness for a specific use case, or regulatory compliance.
@@ -19,7 +19,7 @@ The certificate does **not** certify statistical accuracy, fitness for a specifi
 
 ### Is a certificate a compliance document?
 
-No. A SDAAS.io certificate is a technical attestation, not a legal or regulatory compliance document. It does not:
+No. A CertifiedData.io certificate is a technical attestation, not a legal or regulatory compliance document. It does not:
 
 - Certify compliance with GDPR, HIPAA, CCPA, or any other regulation
 - Replace a data processing agreement (DPA)
@@ -32,17 +32,17 @@ Consult your legal and compliance team for regulatory decisions.
 
 ### What does "independently verifiable" mean?
 
-It means any third party can verify the certificate's authenticity without contacting SDAAS.io:
+It means any third party can verify the certificate's authenticity without contacting CertifiedData.io:
 
-1. Fetch the certificate manifest from `sdaas.io/api/cert/{id}/manifest`
-2. Fetch the public key from `sdaas.io/.well-known/signing-keys.json`
+1. Fetch the certificate manifest from `certifieddata.io/api/cert/{id}/manifest`
+2. Fetch the public key from `certifieddata.io/.well-known/signing-keys.json`
 3. Verify the Ed25519 signature locally
 
-The `@sdaas/verify` package and the Python verifier in this repository implement this flow. If the signature is valid, the certificate was genuinely issued by SDAAS.io and has not been tampered with.
+The `@certifieddata/verify` package and the Python verifier in this repository implement this flow. If the signature is valid, the certificate was genuinely issued by CertifiedData.io and has not been tampered with.
 
 ---
 
-### What happens if SDAAS.io goes away?
+### What happens if CertifiedData.io goes away?
 
 If you have the certificate zip package (which includes `certificate.json` and `public_key.pem`), you can still verify the certificate using the pinned public key — no network calls required.
 
@@ -82,7 +82,7 @@ See [canonicalization.md](./canonicalization.md) for full details.
 
 ---
 
-### Can I verify without the `@sdaas/verify` package?
+### Can I verify without the `@certifieddata/verify` package?
 
 Yes. The verification algorithm is simple:
 
@@ -132,7 +132,7 @@ This package is self-contained for long-term archival and offline verification.
 
 ## PII Scanner
 
-### Is `@sdaas/pii-scan` a compliance tool?
+### Is `@certifieddata/pii-scan` a compliance tool?
 
 No. It is a diagnostic aid that uses regex heuristics to flag likely PII patterns for human review. It does not:
 
@@ -144,13 +144,13 @@ False positives and negatives are expected and possible.
 
 ---
 
-### Does `@sdaas/pii-scan` send data to SDAAS.io?
+### Does `@certifieddata/pii-scan` send data to CertifiedData.io?
 
 No. The scanner runs entirely locally. No data leaves your machine. No network calls are made. No telemetry is collected.
 
 ---
 
-### What formats does `@sdaas/pii-scan` support?
+### What formats does `@certifieddata/pii-scan` support?
 
 CSV (with a header row) and JSON (array of objects, or `{ data: [...] }` / `{ rows: [...] }` wrappers). Binary formats (Excel, Parquet, Avro, etc.) are not supported.
 
@@ -161,5 +161,5 @@ CSV (with a header row) and JSON (array of objects, or `{ data: [...] }` / `{ ro
 - [Manifest Format](./manifest-format.md)
 - [Canonicalization](./canonicalization.md)
 - [Key Rotation](./key-rotation.md)
-- [SDAAS.io Security FAQ](https://sdaas.io/security-and-certification-faq)
-- [Verification Framework](https://sdaas.io/verification-framework)
+- [CertifiedData.io Security FAQ](https://certifieddata.io/security-and-certification-faq)
+- [Verification Framework](https://certifieddata.io/verification-framework)

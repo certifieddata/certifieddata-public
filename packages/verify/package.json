@@ -1,7 +1,7 @@
 {
-  "name": "@sdaas/verify",
+  "name": "@certifieddata/verify",
   "version": "0.1.0",
-  "description": "Verify SDAAS.io certificate manifests — Ed25519 signature + payload canonicalization",
+  "description": "Verify CertifiedData.io certificate manifests — Ed25519 signature + payload canonicalization",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

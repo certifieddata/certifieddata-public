@@ -1,6 +1,6 @@
 # Key Rotation
 
-SDAAS.io uses Ed25519 asymmetric signing for certificate signatures. Public keys are published at `/.well-known/signing-keys.json`. This document covers how key rotation works and how verifiers should handle it.
+CertifiedData.io uses Ed25519 asymmetric signing for certificate signatures. Public keys are published at `/.well-known/signing-keys.json`. This document covers how key rotation works and how verifiers should handle it.
 
 ---
 
@@ -57,10 +57,10 @@ For high-assurance environments, you may pin the public key:
 
 This is the most robust approach — it removes the network dependency and works even if the endpoint is unreachable.
 
-The `@sdaas/verify` package supports pinned key verification:
+The `@certifieddata/verify` package supports pinned key verification:
 
 ```typescript
-import { verifyManifest } from "@sdaas/verify";
+import { verifyManifest } from "@certifieddata/verify";
 import { readFileSync } from "fs";
 
 const publicKeyPem = readFileSync("public_key.pem", "utf8");
