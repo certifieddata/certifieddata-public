@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in contributing to `sdaas-public`. This repository contains open-source verification tools for the [CertifiedData.io](https://certifieddata.io) platform.
+Thank you for your interest in contributing to `certifieddata-public`. This repository contains open-source verification tools for the [CertifiedData.io](https://certifieddata.io) platform.
 
 ---
 

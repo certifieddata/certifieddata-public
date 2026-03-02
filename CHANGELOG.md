@@ -18,17 +18,17 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `@certifieddata/verify` — Ed25519 signature verification + payload canonicalization
   - `verifyManifest(envelope, publicKeyPem, expectedKeyId?)` — full verification flow
   - `canonicalPayloadBytes(payload)` — standalone canonicalization (json-stable-stringify + strip undefined)
-  - TypeScript types: `SdaasManifestEnvelope`, `SdaasCertPayload`, `SdaasSignature`, `VerifyResult`
+  - TypeScript types: `CertifiedDataManifestEnvelope`, `CertifiedDataCertPayload`, `CertifiedDataSignature`, `VerifyResult`
 
 - `@certifieddata/sdk` — CertifiedData.io client SDK
-  - `SdaasClient.fetchManifest(certId)` — fetch signed envelope from API
-  - `SdaasClient.fetchVerifyStatus(certId)` — fetch server-side verification status
-  - `SdaasClient.fetchSigningKeys()` — fetch active public keys from `/.well-known/signing-keys.json`
-  - `SdaasClient.fetchAndVerify(certId)` — full fetch + local cryptographic verification in one call
+  - `CertifiedDataClient.fetchManifest(certId)` — fetch signed envelope from API
+  - `CertifiedDataClient.fetchVerifyStatus(certId)` — fetch server-side verification status
+  - `CertifiedDataClient.fetchSigningKeys()` — fetch active public keys from `/.well-known/signing-keys.json`
+  - `CertifiedDataClient.fetchAndVerify(certId)` — full fetch + local cryptographic verification in one call
 
 - `@certifieddata/schema-gen` — Dataset manifest scaffolding CLI + library
   - `generateManifestScaffold(input)` — generate manifest scaffold from field map
-  - `sdaas-schema-gen` CLI with `--name`, `--fields`, `--rows`, `--out` flags
+  - `schema-gen` CLI with `--name`, `--fields`, `--rows`, `--out` flags
 
 - `examples/fixtures/` — test keypair + 5 fixture manifests (valid, tampered, bad sig, missing fields, wrong alg)
 - `examples/node-verify/` — local fixture verification example

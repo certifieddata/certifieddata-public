@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-SDAAS Certificate Verifier — Python
+CertifiedData.io Certificate Verifier — Python
 
-Independently verify SDAAS.io certificate manifests using Ed25519.
+Independently verify CertifiedData.io certificate manifests using Ed25519.
 
 Accepts either:
   - A manifest.json file path (local verification from fixture)
-  - Env var SDAAS_CERT_ID  (fetches live from sdaas.io)
+  - Env var CERTIFIEDDATA_CERT_ID  (fetches live from certifieddata.io)
 
 Usage:
   # Verify a local manifest file with a local keypair file (for testing fixtures)
@@ -16,7 +16,7 @@ Usage:
   python verify.py manifest.json --key-pem public_key.pem
 
   # Fetch + verify from live API
-  SDAAS_CERT_ID=<cert-id> python verify.py
+  CERTIFIEDDATA_CERT_ID=<cert-id> python verify.py
 
 Dependencies: pip install cryptography requests
 """
@@ -43,7 +43,7 @@ def strip_undefined(obj):
 
 def canonical_payload_bytes(payload: dict) -> bytes:
     """
-    Produce canonical UTF-8 bytes for an SDAAS payload.
+    Produce canonical UTF-8 bytes for a CertifiedData payload.
 
     Mirrors server implementation:
       json-stable-stringify(stripUndefined(payload)) → UTF-8 bytes
@@ -104,7 +104,7 @@ def validate_envelope(envelope: dict) -> dict | None:
 
 def verify_manifest(envelope: dict, public_key_pem: str, expected_key_id: str | None = None) -> dict:
     """
-    Verify a SDAAS manifest envelope.
+    Verify a CertifiedData manifest envelope.
 
     Args:
         envelope: Parsed JSON from GET /api/cert/:id/manifest
@@ -157,19 +157,19 @@ def load_pem_from_keypair_json(keypair_path: str) -> str:
     return pem
 
 
-def fetch_from_live_api(cert_id: str, base_url: str = "https://sdaas.io") -> tuple[dict, str]:
-    """Fetch manifest + resolve public key from live SDAAS API."""
+def fetch_from_live_api(cert_id: str, base_url: str = "https://certifieddata.io") -> tuple[dict, str]:
+    """Fetch manifest + resolve public key from live CertifiedData.io API."""
     import requests
 
     manifest_url = f"{base_url}/api/cert/{cert_id}/manifest"
     keys_url = f"{base_url}/.well-known/signing-keys.json"
 
-    print(f"[sdaas-verify] Fetching manifest: {manifest_url}")
-    manifest_res = requests.get(manifest_url, headers={"Accept": "application/sdaas.manifest+json"})
+    print(f"[certifieddata-verify] Fetching manifest: {manifest_url}")
+    manifest_res = requests.get(manifest_url, headers={"Accept": "application/certifieddata.manifest+json"})
     manifest_res.raise_for_status()
     envelope = manifest_res.json()
 
-    print(f"[sdaas-verify] Fetching signing keys: {keys_url}")
+    print(f"[certifieddata-verify] Fetching signing keys: {keys_url}")
     keys_res = requests.get(keys_url)
     keys_res.raise_for_status()
     keys_body = keys_res.json()
@@ -187,12 +187,12 @@ def fetch_from_live_api(cert_id: str, base_url: str = "https://sdaas.io") -> tup
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Independently verify a SDAAS.io certificate manifest"
+        description="Independently verify a CertifiedData.io certificate manifest"
     )
     parser.add_argument(
         "manifest",
         nargs="?",
-        help="Path to manifest JSON file (omit to fetch from live API via SDAAS_CERT_ID env var)",
+        help="Path to manifest JSON file (omit to fetch from live API via CERTIFIEDDATA_CERT_ID env var)",
     )
     parser.add_argument(
         "keypair_or_pem",
@@ -201,13 +201,13 @@ def main():
     )
     parser.add_argument("--key-pem", help="Path to PEM public key file (alternative to positional arg)")
     parser.add_argument("--expected-key-id", help="Assert that signature.key_id matches this value")
-    parser.add_argument("--base-url", default="https://sdaas.io", help="SDAAS API base URL")
+    parser.add_argument("--base-url", default="https://certifieddata.io", help="CertifiedData.io API base URL")
     args = parser.parse_args()
 
-    cert_id = os.environ.get("SDAAS_CERT_ID")
+    cert_id = os.environ.get("CERTIFIEDDATA_CERT_ID")
 
     if not args.manifest and not cert_id:
-        parser.error("Provide a manifest file path or set SDAAS_CERT_ID env var")
+        parser.error("Provide a manifest file path or set CERTIFIEDDATA_CERT_ID env var")
 
     # Load envelope + public key
     if args.manifest:
@@ -225,7 +225,7 @@ def main():
     else:
         envelope, public_key_pem = fetch_from_live_api(cert_id, args.base_url)
 
-    expected_key_id = args.expected_key_id or os.environ.get("SDAAS_EXPECTED_KEY_ID")
+    expected_key_id = args.expected_key_id or os.environ.get("CERTIFIEDDATA_EXPECTED_KEY_ID")
 
     result = verify_manifest(envelope, public_key_pem, expected_key_id)
 

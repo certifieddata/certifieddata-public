@@ -1,4 +1,4 @@
-import type { SdaasManifestEnvelope, VerifyResult } from "@certifieddata/verify";
+import type { CertifiedDataManifestEnvelope, VerifyResult } from "@certifieddata/verify";
 import { verifyManifest } from "@certifieddata/verify";
 import type { SigningKeysResponse, VerifyStatusResponse } from "./types.js";
 
@@ -13,17 +13,17 @@ export class CertifiedDataClient {
    * The envelope contains the payload (what was signed) + the detached signature.
    *
    * Endpoint: GET /api/cert/:id/manifest
-   * Content-Type: application/sdaas.manifest+json
+   * Content-Type: application/certifieddata.manifest+json
    */
-  async fetchManifest(certId: string): Promise<SdaasManifestEnvelope> {
+  async fetchManifest(certId: string): Promise<CertifiedDataManifestEnvelope> {
     const url = `${this.baseUrl}/api/cert/${certId}/manifest`;
     const res = await fetch(url, {
-      headers: { Accept: "application/sdaas.manifest+json" },
+      headers: { Accept: "application/certifieddata.manifest+json" },
     });
     if (!res.ok) {
       throw new Error(`fetchManifest(${certId}) failed: HTTP ${res.status}`);
     }
-    return (await res.json()) as SdaasManifestEnvelope;
+    return (await res.json()) as CertifiedDataManifestEnvelope;
   }
 
   /**
@@ -63,7 +63,7 @@ export class CertifiedDataClient {
    * no trust in CertifiedData server response required.
    */
   async fetchAndVerify(certId: string): Promise<{
-    manifest: SdaasManifestEnvelope;
+    manifest: CertifiedDataManifestEnvelope;
     result: VerifyResult;
   }> {
     const [manifest, keysResp] = await Promise.all([

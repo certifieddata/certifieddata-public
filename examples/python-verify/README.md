@@ -34,13 +34,13 @@ python verify.py ../fixtures/manifest.tampered.json ../fixtures/keypair.test.jso
 ## Verify from the live API
 
 ```bash
-CertifiedData_CERT_ID=<your-cert-id> python verify.py
+CERTIFIEDDATA_CERT_ID=<your-cert-id> python verify.py
 ```
 
 With key pinning:
 ```bash
-CertifiedData_CERT_ID=<your-cert-id> \
-CertifiedData_EXPECTED_KEY_ID=ed25519-prod-2025-02 \
+CERTIFIEDDATA_CERT_ID=<your-cert-id> \
+CERTIFIEDDATA_EXPECTED_KEY_ID=ed25519-prod-2025-02 \
 python verify.py
 ```
 
@@ -84,7 +84,7 @@ cert_id = "your-cert-id"
 
 envelope = requests.get(
     f"https://certifieddata.io/api/cert/{cert_id}/manifest",
-    headers={"Accept": "application/sdaas.manifest+json"}
+    headers={"Accept": "application/certifieddata.manifest+json"}
 ).json()
 
 keys = requests.get("https://certifieddata.io/.well-known/signing-keys.json").json()

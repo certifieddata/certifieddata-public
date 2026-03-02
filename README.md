@@ -32,7 +32,7 @@ Or with just `@certifieddata/verify` and your own fetch:
 import { verifyManifest } from "@certifieddata/verify";
 
 const envelope = await fetch("https://certifieddata.io/api/cert/CERT_ID/manifest", {
-  headers: { Accept: "application/sdaas.manifest+json" },
+  headers: { Accept: "application/certifieddata.manifest+json" },
 }).then(r => r.json());
 
 const { keys } = await fetch("https://certifieddata.io/.well-known/signing-keys.json").then(r => r.json());
@@ -47,7 +47,7 @@ const result = await verifyManifest(envelope, key.public_key_pem);
 
 ```bash
 pip install cryptography requests
-CertifiedData_CERT_ID=<cert-id> python examples/python-verify/verify.py
+CERTIFIEDDATA_CERT_ID=<cert-id> python examples/python-verify/verify.py
 ```
 
 See [`examples/python-verify/`](examples/python-verify/) for library usage and Jupyter notebook examples.
@@ -61,7 +61,7 @@ Add certificate verification to a GitHub Actions pipeline before using a synthet
 ```yaml
 - name: Verify CertifiedData Certificate
   env:
-    CertifiedData_CERT_ID: ${{ secrets.CertifiedData_CERT_ID }}
+    CERTIFIEDDATA_CERT_ID: ${{ secrets.CERTIFIEDDATA_CERT_ID }}
   run: |
     curl -fsSL https://raw.githubusercontent.com/certifieddata/certifieddata-public/main/examples/ci-verify/verify.mjs -o verify.mjs
     node verify.mjs
@@ -101,7 +101,7 @@ OpenAPI spec: [`openapi/openapi.yaml`](openapi/openapi.yaml)
 
 ```bash
 git clone https://github.com/certifieddata/certifieddata-public.git
-cd sdaas-public && pnpm install && pnpm build
+cd certifieddata-public && pnpm install && pnpm build
 cd examples/node-verify && node index.mjs valid
 ```
 

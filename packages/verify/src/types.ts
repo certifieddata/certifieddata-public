@@ -2,7 +2,7 @@
  * CertifiedData.io certificate manifest envelope.
  *
  * Returned by:  GET /api/cert/:id/manifest
- *               Accept: application/sdaas.manifest+json
+ *               Accept: application/certifieddata.manifest+json
  *
  * The `payload` field is exactly what was signed. The signing input is:
  *   canonicalize(payload)  →  UTF-8 bytes  →  Ed25519 sign
@@ -10,13 +10,13 @@
  * Canonicalization rule: strip undefined values, then JSON with keys sorted
  * alphabetically at every level (equivalent to json-stable-stringify).
  */
-export interface SdaasManifestEnvelope {
-  schema_version: "sdaas.manifest.v1";
-  payload: SdaasCertPayload;
-  signature: SdaasSignature;
+export interface CertifiedDataManifestEnvelope {
+  schema_version: "certifieddata.manifest.v1" | "sdaas.manifest.v1"; // legacy alias accepted
+  payload: CertifiedDataCertPayload;
+  signature: CertifiedDataSignature;
 }
 
-export interface SdaasSignature {
+export interface CertifiedDataSignature {
   alg: "Ed25519" | "HMAC-SHA256";
   key_id: string | null;
   value: string | null; // base64-encoded signature bytes
@@ -26,7 +26,7 @@ export interface SdaasSignature {
  * The cert.v1 payload structure (subset of fields relevant to integrators).
  * The full payload may contain additional fields — they are included in signing.
  */
-export interface SdaasCertPayload {
+export interface CertifiedDataCertPayload {
   schema_version: string;       // e.g. "cert.v1"
   certificate_id: string;
   certificate_type: "GENESIS" | "REPLICA";
