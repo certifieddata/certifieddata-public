@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "sdaas-schema-gen": "dist/cli.js"
+    "schema-gen": "dist/cli.js"
   },
   "exports": {
     ".": {
@@ -24,11 +24,11 @@
     "@types/node": "^20.0.0",
     "typescript": "^5.4.0"
   },
-  "keywords": ["sdaas", "schema", "manifest", "synthetic-data", "cli"],
+  "keywords": ["certifieddata", "schema", "manifest", "synthetic-data", "cli"],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sdaas-io/sdaas-public.git",
+    "url": "https://github.com/certifieddata/certifieddata-public.git",
     "directory": "packages/schema-gen"
   }
 }

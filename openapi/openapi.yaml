@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: SDAAS.io Verification API
+  title: CertifiedData.io Verification API
   version: "1.0.0"
   description: |
-    Public endpoints for fetching and verifying SDAAS.io certificate manifests.
+    Public endpoints for fetching and verifying CertifiedData.io certificate manifests.
 
-    Certificates are issued by SDAAS.io and signed with Ed25519. Verification
+    Certificates are issued by CertifiedData.io and signed with Ed25519. Verification
     can be performed independently without trusting any server response:
 
     1. Fetch the manifest envelope from `/api/cert/{id}/manifest`
@@ -14,13 +14,13 @@ info:
 
     Canonicalization rule: `json-stable-stringify(stripUndefined(payload))` → UTF-8 bytes
   contact:
-    email: support@sdaas.io
+    email: support@certifieddata.io
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://sdaas.io
+  - url: https://certifieddata.io
     description: Production
 
 paths:
@@ -112,7 +112,7 @@ paths:
       operationId: getSigningKeys
       summary: Published Ed25519 public keys
       description: |
-        Returns the list of active Ed25519 signing public keys used by SDAAS.io.
+        Returns the list of active Ed25519 signing public keys used by CertifiedData.io.
 
         Use this to independently verify certificate signatures without trusting
         any server-side claim.
@@ -156,7 +156,7 @@ components:
               properties:
                 name:
                   type: string
-                  example: "SDAAS.io"
+                  example: "CertifiedData.io"
                 environment:
                   type: string
                   enum: [production, development]
@@ -241,10 +241,10 @@ components:
             $ref: "#/components/schemas/SigningKey"
         issuer:
           type: string
-          example: "SDAAS.io"
+          example: "CertifiedData.io"
         documentation:
           type: string
-          example: "https://sdaas.io/verification-framework"
+          example: "https://certifieddata.io/verification-framework"
 
     SigningKey:
       type: object

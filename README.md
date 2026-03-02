@@ -1,4 +1,4 @@
-# sdaas-public
+# certifieddata-public
 
 Verification and integration toolkit for [CertifiedData.io](https://certifieddata.io) synthetic dataset certificates.
 
@@ -19,9 +19,9 @@ Independent Ed25519 verification — no API key required, no server trust requir
 ## Verify a certificate
 
 ```ts
-import { SdaasClient } from "@certifieddata/sdk";
+import { CertifiedDataClient } from "@certifieddata/sdk";
 
-const { result } = await new SdaasClient().fetchAndVerify("CERT_ID");
+const { result } = await new CertifiedDataClient().fetchAndVerify("CERT_ID");
 console.log(result);
 // { verified: true, alg: "Ed25519", key_id: "ed25519-prod-2025-02" }
 ```
@@ -63,7 +63,7 @@ Add certificate verification to a GitHub Actions pipeline before using a synthet
   env:
     CertifiedData_CERT_ID: ${{ secrets.CertifiedData_CERT_ID }}
   run: |
-    curl -fsSL https://raw.githubusercontent.com/Sdaas-io/sdaas-public/main/examples/ci-verify/verify.mjs -o verify.mjs
+    curl -fsSL https://raw.githubusercontent.com/certifieddata/certifieddata-public/main/examples/ci-verify/verify.mjs -o verify.mjs
     node verify.mjs
 ```
 
@@ -100,7 +100,7 @@ OpenAPI spec: [`openapi/openapi.yaml`](openapi/openapi.yaml)
 (valid, tampered, bad signature, missing fields, wrong algorithm) for running examples offline.
 
 ```bash
-git clone https://github.com/Sdaas-io/sdaas-public.git
+git clone https://github.com/certifieddata/certifieddata-public.git
 cd sdaas-public && pnpm install && pnpm build
 cd examples/node-verify && node index.mjs valid
 ```

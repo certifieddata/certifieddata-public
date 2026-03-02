@@ -1,5 +1,5 @@
 /**
- * Example: Verify a SDAAS certificate manifest from local fixture files.
+ * Example: Verify a CertifiedData.io certificate manifest from local fixture files.
  *
  * Usage:
  *   node index.mjs [fixture]
@@ -15,7 +15,7 @@
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { verifyManifest } from "@sdaas/verify";
+import { verifyManifest } from "@certifieddata/verify";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixturesDir = join(__dirname, "..", "fixtures");

@@ -25,11 +25,11 @@
     "@types/node": "^20.0.0",
     "typescript": "^5.4.0"
   },
-  "keywords": ["sdaas", "certificate", "verify", "ed25519", "synthetic-data"],
+  "keywords": ["certifieddata", "certificate", "verify", "ed25519", "synthetic-data"],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sdaas-io/sdaas-public.git",
+    "url": "https://github.com/certifieddata/certifieddata-public.git",
     "directory": "packages/verify"
   }
 }

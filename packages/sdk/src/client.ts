@@ -2,7 +2,7 @@ import type { SdaasManifestEnvelope, VerifyResult } from "@certifieddata/verify"
 import { verifyManifest } from "@certifieddata/verify";
 import type { SigningKeysResponse, VerifyStatusResponse } from "./types.js";
 
-export class SdaasClient {
+export class CertifiedDataClient {
   constructor(private baseUrl: string = "https://certifieddata.io") {
     // Remove trailing slash
     this.baseUrl = baseUrl.replace(/\/$/, "");

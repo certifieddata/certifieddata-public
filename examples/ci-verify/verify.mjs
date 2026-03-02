@@ -1,26 +1,26 @@
 #!/usr/bin/env node
 /**
- * SDAAS Certificate Verification — standalone CI script
+ * CertifiedData.io Certificate Verification — standalone CI script
  *
- * Fetches a certificate manifest from sdaas.io, resolves the signing key,
+ * Fetches a certificate manifest from certifieddata.io, resolves the signing key,
  * and independently verifies the Ed25519 signature.
  *
  * Exits 0 if verified, 1 if verification fails.
  *
  * Usage:
- *   SDAAS_CERT_ID=<cert-id> node verify.mjs
+ *   CERTIFIEDDATA_CERT_ID=<cert-id> node verify.mjs
  *
  * Optional env vars:
- *   SDAAS_BASE_URL       — defaults to https://sdaas.io
- *   SDAAS_EXPECTED_KEY_ID — if set, asserts the signing key_id matches
+ *   CERTIFIEDDATA_BASE_URL       — defaults to https://certifieddata.io
+ *   CERTIFIEDDATA_EXPECTED_KEY_ID — if set, asserts the signing key_id matches
  */
 
-const certId = process.env.SDAAS_CERT_ID;
-const baseUrl = (process.env.SDAAS_BASE_URL ?? "https://sdaas.io").replace(/\/$/, "");
-const expectedKeyId = process.env.SDAAS_EXPECTED_KEY_ID;
+const certId = process.env.CERTIFIEDDATA_CERT_ID;
+const baseUrl = (process.env.CERTIFIEDDATA_BASE_URL ?? "https://certifieddata.io").replace(/\/$/, "");
+const expectedKeyId = process.env.CERTIFIEDDATA_EXPECTED_KEY_ID;
 
 if (!certId) {
-  console.error("Error: SDAAS_CERT_ID is required");
+  console.error("Error: CERTIFIEDDATA_CERT_ID is required");
   process.exit(1);
 }
 
@@ -66,8 +66,8 @@ function verifySignature(payloadBytes, signatureB64, publicKeyPem) {
 }
 
 // ── Main ────────────────────────────────────────────────────────────────────
-console.log(`[sdaas-verify] cert_id : ${certId}`);
-console.log(`[sdaas-verify] base_url: ${baseUrl}`);
+console.log(`[certifieddata-verify] cert_id : ${certId}`);
+console.log(`[certifieddata-verify] base_url: ${baseUrl}`);
 
 const [manifestRes, keysRes] = await Promise.all([
   fetch(`${baseUrl}/api/cert/${certId}/manifest`, {
@@ -77,11 +77,11 @@ const [manifestRes, keysRes] = await Promise.all([
 ]);
 
 if (!manifestRes.ok) {
-  console.error(`[sdaas-verify] FAIL: manifest fetch returned HTTP ${manifestRes.status}`);
+  console.error(`[certifieddata-verify] FAIL: manifest fetch returned HTTP ${manifestRes.status}`);
   process.exit(1);
 }
 if (!keysRes.ok) {
-  console.error(`[sdaas-verify] FAIL: signing-keys fetch returned HTTP ${keysRes.status}`);
+  console.error(`[certifieddata-verify] FAIL: signing-keys fetch returned HTTP ${keysRes.status}`);
   process.exit(1);
 }
 
@@ -91,28 +91,28 @@ const keysBody = await keysRes.json();
 const { signature, payload } = envelope;
 const { alg, key_id, value: signatureB64 } = signature ?? {};
 
-console.log(`[sdaas-verify] alg    : ${alg}`);
-console.log(`[sdaas-verify] key_id : ${key_id}`);
+console.log(`[certifieddata-verify] alg    : ${alg}`);
+console.log(`[certifieddata-verify] key_id : ${key_id}`);
 
 if (alg !== "Ed25519") {
-  console.error(`[sdaas-verify] FAIL: alg "${alg}" is not independently verifiable`);
+  console.error(`[certifieddata-verify] FAIL: alg "${alg}" is not independently verifiable`);
   process.exit(1);
 }
 
 if (expectedKeyId && key_id !== expectedKeyId) {
-  console.error(`[sdaas-verify] FAIL: key_id "${key_id}" does not match expected "${expectedKeyId}"`);
+  console.error(`[certifieddata-verify] FAIL: key_id "${key_id}" does not match expected "${expectedKeyId}"`);
   process.exit(1);
 }
 
 const key = keysBody.keys?.find((k) => k.key_id === key_id);
 if (!key) {
-  console.error(`[sdaas-verify] FAIL: no public key found for key_id "${key_id}"`);
-  console.error(`[sdaas-verify] Available keys: ${keysBody.keys?.map((k) => k.key_id).join(", ")}`);
+  console.error(`[certifieddata-verify] FAIL: no public key found for key_id "${key_id}"`);
+  console.error(`[certifieddata-verify] Available keys: ${keysBody.keys?.map((k) => k.key_id).join(", ")}`);
   process.exit(1);
 }
 
 if (key.status !== "active") {
-  console.error(`[sdaas-verify] FAIL: signing key "${key_id}" is ${key.status}`);
+  console.error(`[certifieddata-verify] FAIL: signing key "${key_id}" is ${key.status}`);
   process.exit(1);
 }
 
@@ -121,9 +121,9 @@ const payloadBytes = Buffer.from(canonical, "utf8");
 const ok = verifySignature(payloadBytes, signatureB64, key.public_key_pem);
 
 if (!ok) {
-  console.error("[sdaas-verify] FAIL: Ed25519 signature verification failed");
+  console.error("[certifieddata-verify] FAIL: Ed25519 signature verification failed");
   process.exit(1);
 }
 
-console.log(`[sdaas-verify] ✓ VERIFIED — cert_id=${certId} key_id=${key_id}`);
+console.log(`[certifieddata-verify] ✓ VERIFIED — cert_id=${certId} key_id=${key_id}`);
 process.exit(0);

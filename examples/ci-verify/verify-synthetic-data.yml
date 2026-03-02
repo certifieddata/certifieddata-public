@@ -1,11 +1,11 @@
-# SDAAS Certificate Verification — GitHub Actions workflow
+# CertifiedData.io Certificate Verification — GitHub Actions workflow
 #
 # Add this to your repo at .github/workflows/verify-synthetic-data.yml
 #
 # Prerequisites:
-#   1. Purchase a SDAAS.io certificate for your synthetic dataset
-#   2. Add the certificate ID to GitHub Secrets: SDAAS_CERT_ID
-#   3. (Optional) Add SDAAS_EXPECTED_KEY_ID to pin the signing key
+#   1. Purchase a CertifiedData.io certificate for your synthetic dataset
+#   2. Add the certificate ID to GitHub Secrets: CERTIFIEDDATA_CERT_ID
+#   3. (Optional) Add CERTIFIEDDATA_EXPECTED_KEY_ID to pin the signing key
 #
 # Usage:
 #   This workflow runs on every push to main/staging.
@@ -20,17 +20,17 @@ on:
 
 jobs:
   verify-cert:
-    name: Verify SDAAS Certificate
+    name: Verify CertifiedData Certificate
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
       # Option A: Self-contained verification (no npm install needed)
-      - name: Download SDAAS verification script
+      - name: Download CertifiedData verification script
         run: |
           curl -fsSL \
-            https://raw.githubusercontent.com/Sdaas-io/sdaas-public/main/examples/ci-verify/verify.mjs \
+            https://raw.githubusercontent.com/certifieddata/certifieddata-public/main/examples/ci-verify/verify.mjs \
             -o verify.mjs
 
       - uses: actions/setup-node@v4
@@ -39,8 +39,8 @@ jobs:
 
       - name: Verify certificate
         env:
-          SDAAS_CERT_ID: ${{ secrets.SDAAS_CERT_ID }}
-          SDAAS_EXPECTED_KEY_ID: ${{ secrets.SDAAS_EXPECTED_KEY_ID }}
+          CERTIFIEDDATA_CERT_ID: ${{ secrets.CERTIFIEDDATA_CERT_ID }}
+          CERTIFIEDDATA_EXPECTED_KEY_ID: ${{ secrets.CERTIFIEDDATA_EXPECTED_KEY_ID }}
         run: node verify.mjs
 
       # Option B: Use @certifieddata/sdk (uncomment if you prefer the full SDK)
@@ -49,14 +49,14 @@ jobs:
       # - name: Verify via SDK
       #   run: |
       #     node --input-type=module <<'EOF'
-      #     import { SdaasClient } from "@certifieddata/sdk";
-      #     const client = new SdaasClient();
-      #     const { result } = await client.fetchAndVerify(process.env.SDAAS_CERT_ID);
+      #     import { CertifiedDataClient } from "@certifieddata/sdk";
+      #     const client = new CertifiedDataClient();
+      #     const { result } = await client.fetchAndVerify(process.env.CERTIFIEDDATA_CERT_ID);
       #     console.log(result);
       #     if (!result.verified) { console.error("Certificate verification failed"); process.exit(1); }
       #     EOF
       #   env:
-      #     SDAAS_CERT_ID: ${{ secrets.SDAAS_CERT_ID }}
+      #     CERTIFIEDDATA_CERT_ID: ${{ secrets.CERTIFIEDDATA_CERT_ID }}
 
   use-dataset:
     name: Run tests with certified dataset
@@ -68,10 +68,10 @@ jobs:
 
       - name: Download certified dataset
         env:
-          SDAAS_CERT_ID: ${{ secrets.SDAAS_CERT_ID }}
+          CERTIFIEDDATA_CERT_ID: ${{ secrets.CERTIFIEDDATA_CERT_ID }}
         run: |
           # Replace with your actual dataset download URL
-          curl -fsSL "https://your-storage.example.com/datasets/${SDAAS_CERT_ID}/dataset.csv" \
+          curl -fsSL "https://your-storage.example.com/datasets/${CERTIFIEDDATA_CERT_ID}/dataset.csv" \
             -o dataset.csv
 
       - name: Run tests with certified dataset
