@@ -65,3 +65,8 @@ export interface CertifiedDataCertPayload {
 export type VerifyResult =
   | { verified: true;  alg: string; key_id: string | null }
   | { verified: false; alg?: string; key_id?: string | null; reason: string };
+
+// Legacy aliases — kept for backward compat with integrators using the old SDaaS name
+export type SdaasManifestEnvelope = CertifiedDataManifestEnvelope;
+export type SdaasCertPayload = CertifiedDataCertPayload;
+export type SdaasSignature = CertifiedDataSignature;

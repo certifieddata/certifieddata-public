@@ -82,7 +82,7 @@ def validate_envelope(envelope: dict) -> dict | None:
     """Returns an error dict if shape is invalid, else None."""
     if not isinstance(envelope, dict):
         return {"verified": False, "reason": "Envelope is not an object"}
-    if envelope.get("schema_version") != "sdaas.manifest.v1":
+    if envelope.get("schema_version") not in ("certifieddata.manifest.v1", "sdaas.manifest.v1"):
         return {"verified": False, "reason": f"Unknown schema_version: {envelope.get('schema_version')}"}
     if not isinstance(envelope.get("payload"), dict):
         return {"verified": False, "reason": "Missing or invalid payload"}

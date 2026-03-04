@@ -10,7 +10,7 @@
  *   // Fetch from CertifiedData API
  *   const envelope = await fetch(
  *     "https://certifieddata.io/api/cert/<CERT_ID>/manifest",
- *     { headers: { Accept: "application/sdaas.manifest+json" } }
+ *     { headers: { Accept: "application/certifieddata.manifest+json" } }
  *   ).then(r => r.json());
  *
  *   // Fetch public key

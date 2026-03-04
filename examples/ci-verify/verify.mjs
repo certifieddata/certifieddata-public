@@ -71,7 +71,7 @@ console.log(`[certifieddata-verify] base_url: ${baseUrl}`);
 
 const [manifestRes, keysRes] = await Promise.all([
   fetch(`${baseUrl}/api/cert/${certId}/manifest`, {
-    headers: { Accept: "application/sdaas.manifest+json" },
+    headers: { Accept: "application/certifieddata.manifest+json" },
   }),
   fetch(`${baseUrl}/.well-known/signing-keys.json`),
 ]);

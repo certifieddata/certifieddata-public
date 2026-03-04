@@ -51,13 +51,13 @@ paths:
             Content-Type:
               schema:
                 type: string
-                example: "application/sdaas.manifest+json; charset=utf-8"
+                example: "application/certifieddata.manifest+json; charset=utf-8"
             Cache-Control:
               schema:
                 type: string
                 example: "public, max-age=31536000, immutable"
           content:
-            application/sdaas.manifest+json:
+            application/certifieddata.manifest+json:
               schema:
                 $ref: "#/components/schemas/ManifestEnvelope"
         "404":
@@ -134,7 +134,7 @@ components:
       properties:
         schema_version:
           type: string
-          enum: ["sdaas.manifest.v1"]
+          enum: ["certifieddata.manifest.v1", "sdaas.manifest.v1"]
         payload:
           type: object
           description: The cert.v1 payload — exactly what was signed.

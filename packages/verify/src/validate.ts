@@ -6,8 +6,9 @@ export function validateEnvelopeShape(envelope: unknown): VerifyResult | null {
   }
   const e = envelope as Record<string, unknown>;
 
-  if (e["schema_version"] !== "sdaas.manifest.v1") {
-    return { verified: false, reason: `Unknown schema_version: ${e["schema_version"]}` };
+  const sv = e["schema_version"];
+  if (sv !== "certifieddata.manifest.v1" && sv !== "sdaas.manifest.v1") {
+    return { verified: false, reason: `Unknown schema_version: ${sv}` };
   }
   if (!e["payload"] || typeof e["payload"] !== "object") {
     return { verified: false, reason: "Missing or invalid payload" };

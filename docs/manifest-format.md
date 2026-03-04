@@ -10,7 +10,7 @@ Every manifest response includes a signature envelope:
 
 ```json
 {
-  "schema_version": "sdaas.manifest.v1",
+  "schema_version": "certifieddata.manifest.v1",
   "payload": { ... },
   "signature": {
     "alg": "Ed25519",
@@ -22,7 +22,7 @@ Every manifest response includes a signature envelope:
 
 | Field | Description |
 |-------|-------------|
-| `schema_version` | Always `"sdaas.manifest.v1"` |
+| `schema_version` | Always `"certifieddata.manifest.v1"` |
 | `payload` | The certificate payload that was signed (see below) |
 | `signature.alg` | Signing algorithm — currently `"Ed25519"` or `"HMAC-SHA256"` (legacy) |
 | `signature.key_id` | Key identifier — use this to fetch the public key from `/.well-known/signing-keys.json` |
@@ -100,7 +100,7 @@ GET https://certifieddata.io/api/cert/{cert_id}/manifest
 
 # Response
 {
-  "schema_version": "sdaas.manifest.v1",
+  "schema_version": "certifieddata.manifest.v1",
   "payload": { ... },
   "signature": { "alg": "Ed25519", "key_id": "...", "value": "..." }
 }

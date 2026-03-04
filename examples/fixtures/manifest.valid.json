@@ -1,5 +1,5 @@
 {
-  "schema_version": "sdaas.manifest.v1",
+  "schema_version": "certifieddata.manifest.v1",
   "payload": {
     "schema_version": "cert.v1",
     "certificate_id": "cert_demo_fixture_001",
