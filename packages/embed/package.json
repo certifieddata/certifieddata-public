@@ -1,0 +1,34 @@
+{
+  "name": "@certifieddata/embed",
+  "version": "0.1.0",
+  "description": "CertifiedData.io verification badge and trust widget — TypeScript module",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node -e \"process.exit(0)\"",
+    "lint": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "@certifieddata/badge-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  },
+  "keywords": ["certifieddata", "badge", "embed", "widget", "verification", "synthetic-data"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/certifieddata/certifieddata-public.git",
+    "directory": "packages/embed"
+  }
+}

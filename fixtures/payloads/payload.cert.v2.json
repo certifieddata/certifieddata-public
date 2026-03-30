@@ -1,0 +1,12 @@
+{
+  "certification_id": "c3a7e91b-4d2f-4a6b-b8f1-0e9a3c2d5f7e",
+  "timestamp": "2026-03-30T18:22:00Z",
+  "issuer": "CertifiedData.io",
+  "dataset_hash": "sha256:a7f3c9221e3b8d04f1c2a85e6d7b9f301c4e8f2a3d5b6c9e0f1a2b3c4d5e6f7a",
+  "algorithm": "CTGAN",
+  "rows": 100000,
+  "columns": 42,
+  "dataset_name": "synthetic-patient-admissions-100k",
+  "artifact_type": "synthetic_dataset",
+  "schema_version": "cert.v2"
+}

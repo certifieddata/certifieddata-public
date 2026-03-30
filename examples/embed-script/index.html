@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CertifiedData — Script Tag Embed Demo</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #09090b; color: #e4e4e7; padding: 40px; max-width: 720px; margin: 0 auto; }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    p  { font-size: 13px; color: #71717a; margin-bottom: 32px; }
+    h2 { font-size: 13px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: .06em; margin: 32px 0 12px; }
+    pre { background: #18181b; border: 1px solid #27272a; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #a1a1aa; overflow-x: auto; margin-bottom: 16px; }
+    .demo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; min-height: 36px; }
+    .demo-label { font-size: 11px; color: #52525b; width: 100px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<h1>CertifiedData.io — Script Tag Install</h1>
+<p>Add a verification badge to any webpage with a single &lt;script&gt; tag. Replace <code>YOUR_CERT_ID</code> with a real certificate UUID.</p>
+
+<h2>Compact badge</h2>
+<div class="demo-row">
+  <span class="demo-label">Live demo:</span>
+  <!--
+    Replace YOUR_CERT_ID with a real certificate UUID.
+    The script is injected before the tag and the tag is removed.
+  -->
+  <script
+    src="https://certifieddata.io/embed.js"
+    data-cert-id="YOUR_CERT_ID"
+    data-variant="compact"
+    data-theme="dark">
+  </script>
+</div>
+<pre>&lt;script
+  src="https://certifieddata.io/embed.js"
+  data-cert-id="YOUR_CERT_ID"
+  data-variant="compact"
+  data-theme="dark"&gt;
+&lt;/script&gt;</pre>
+
+<h2>Inline badge (default)</h2>
+<div class="demo-row">
+  <span class="demo-label">Live demo:</span>
+  <script
+    src="https://certifieddata.io/embed.js"
+    data-cert-id="YOUR_CERT_ID"
+    data-variant="inline"
+    data-theme="dark">
+  </script>
+</div>
+<pre>&lt;script
+  src="https://certifieddata.io/embed.js"
+  data-cert-id="YOUR_CERT_ID"
+  data-variant="inline"
+  data-theme="dark"&gt;
+&lt;/script&gt;</pre>
+
+<h2>Full trust card</h2>
+<div class="demo-row">
+  <span class="demo-label">Live demo:</span>
+  <script
+    src="https://certifieddata.io/embed.js"
+    data-cert-id="YOUR_CERT_ID"
+    data-variant="full"
+    data-theme="dark"
+    data-show-hash="true">
+  </script>
+</div>
+<pre>&lt;script
+  src="https://certifieddata.io/embed.js"
+  data-cert-id="YOUR_CERT_ID"
+  data-variant="full"
+  data-theme="dark"
+  data-show-hash="true"&gt;
+&lt;/script&gt;</pre>
+
+<h2>Light theme (for light-background pages)</h2>
+<div class="demo-row" style="background:#fff;padding:12px 16px;border-radius:8px;">
+  <span class="demo-label" style="color:#52525b;">Live demo:</span>
+  <script
+    src="https://certifieddata.io/embed.js"
+    data-cert-id="YOUR_CERT_ID"
+    data-variant="inline"
+    data-theme="light">
+  </script>
+</div>
+<pre>&lt;script
+  src="https://certifieddata.io/embed.js"
+  data-cert-id="YOUR_CERT_ID"
+  data-variant="inline"
+  data-theme="light"&gt;
+&lt;/script&gt;</pre>
+
+<h2>With machine-readable JSON-LD injection</h2>
+<pre>&lt;script
+  src="https://certifieddata.io/embed.js"
+  data-cert-id="YOUR_CERT_ID"
+  data-variant="inline"
+  data-show-machine-links="true"&gt;
+&lt;/script&gt;</pre>
+
+<h2>All supported data attributes</h2>
+<pre>data-cert-id            (required)  Certificate UUID
+data-variant            compact | inline | full    (default: inline)
+data-theme              light | dark | auto         (default: dark)
+data-show-hash          true | false                (default: false)
+data-link-target        _blank | _self              (default: _blank)
+data-show-machine-links true | false                (default: false)</pre>
+
+</body>
+</html>

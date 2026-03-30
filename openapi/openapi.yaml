@@ -107,6 +107,79 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /api/badge/{certId}:
+    get:
+      operationId: getBadgeData
+      summary: Rich badge data for embed widgets
+      description: |
+        Returns structured badge data for the given certificate ID.
+        Consumed by `embed.js` and partner integrations.
+
+        CORS-enabled (`Access-Control-Allow-Origin: *`).
+        Cached for 5 minutes for active certificates; `no-store` for revoked/invalid.
+      parameters:
+        - name: certId
+          in: path
+          required: true
+          description: Certificate UUID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Badge data
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+            Cache-Control:
+              schema:
+                type: string
+                example: "public, max-age=300, stale-while-revalidate=60"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadgeData"
+        "404":
+          description: Certificate not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/badge/{certId}/track:
+    post:
+      operationId: trackBadgeEvent
+      summary: Record a badge analytics event
+      description: |
+        Fire-and-forget analytics event from embed.js.
+        Always returns 200. Rate-limited by IP.
+      parameters:
+        - name: certId
+          in: path
+          required: true
+          description: Certificate UUID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrackEventRequest"
+      responses:
+        "200":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+
   /.well-known/signing-keys.json:
     get:
       operationId: getSigningKeys
@@ -263,6 +336,92 @@ components:
         created_at:
           type: string
           format: date-time
+
+    BadgeData:
+      type: object
+      required:
+        - certificate_id
+        - artifact_type
+        - certificate_url
+        - issued_at
+        - issuer
+        - schema_version
+        - status
+        - is_verified
+        - is_deprecated
+        - hash_algorithm
+        - signature_algorithm
+        - hash_short
+        - hash_full
+        - signed_payload_url
+        - verification_url
+        - signing_keys_url
+      properties:
+        certificate_id:
+          type: string
+          format: uuid
+        artifact_name:
+          type: string
+          nullable: true
+        artifact_type:
+          type: string
+          example: synthetic_dataset
+        certificate_url:
+          type: string
+          format: uri
+        issued_at:
+          type: string
+          format: date-time
+        issuer:
+          type: string
+          example: CertifiedData.io
+        schema_version:
+          type: string
+          example: cert.v2
+        status:
+          type: string
+          enum: [active, deprecated, revoked, invalid, unavailable]
+        is_verified:
+          type: boolean
+        is_deprecated:
+          type: boolean
+        hash_algorithm:
+          type: string
+          example: SHA-256
+        signature_algorithm:
+          type: string
+          example: Ed25519
+        hash_short:
+          type: string
+          description: Truncated hash for display (e.g. "a7f3c9...91e2")
+        hash_full:
+          type: string
+          description: Full SHA-256 hash without algorithm prefix
+        signed_payload_url:
+          type: string
+          format: uri
+        verification_url:
+          type: string
+          format: uri
+        signing_keys_url:
+          type: string
+          format: uri
+
+    TrackEventRequest:
+      type: object
+      properties:
+        event_type:
+          type: string
+          enum: [impression, click, expand, verify]
+          default: impression
+        source_url:
+          type: string
+          description: URL of the page embedding the badge
+          maxLength: 2000
+        install_type:
+          type: string
+          enum: [script, iframe, svg, static, module]
+          default: script
 
     ErrorResponse:
       type: object
