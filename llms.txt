@@ -1,0 +1,166 @@
+# CertifiedData.io — Public SDK & Verification Tools
+
+> CertifiedData.io is a certificate authority for AI artifacts.
+> It issues cryptographically signed certificates that prove a dataset was synthetically generated.
+
+## What this repository contains
+
+This is the public-facing SDK, verification tools, and documentation repository for CertifiedData.io.
+
+It contains:
+- TypeScript packages for verifying certificates and rendering trust badges
+- Examples for Node.js, browser, CI pipelines, and Python
+- OpenAPI spec for the REST API
+- Canonical schema definitions and JSON Schemas
+- Test fixtures for local verification
+
+## Core packages
+
+### @certifieddata/verify
+Verify a CertifiedData certificate manifest using Ed25519 signature verification.
+Supports: Node.js 18+, browser (Web Crypto API), Deno, Bun.
+
+```ts
+import { verifyManifest } from "@certifieddata/verify";
+const result = await verifyManifest(envelope, publicKeyPem);
+// { verified: true, alg: "Ed25519", key_id: "..." }
+```
+
+### @certifieddata/sdk
+Convenience client that fetches manifests, signing keys, registry entries, and signed payloads.
+Wraps @certifieddata/verify for full-stack verification in one call.
+
+```ts
+import { CertifiedDataClient } from "@certifieddata/sdk";
+const client = new CertifiedDataClient("https://certifieddata.io");
+const { manifest, result } = await client.fetchAndVerify(certId);
+// Verify a local file hash against the certificate
+const hashCheck = await client.verifyHash(certId, "sha256:abc123...");
+```
+
+### @certifieddata/schemas
+TypeScript types and validators for certificate payloads.
+Canonical source of schema version constants (cert.v1, cert.v2).
+
+```ts
+import { parseCertificatePayload, ACTIVE_SCHEMA_VERSION } from "@certifieddata/schemas";
+const result = parseCertificatePayload(rawPayload);
+// { ok: true, value: CertificatePayload } | { ok: false, reason: string }
+```
+
+### @certifieddata/embed
+TypeScript module for rendering verification badge widgets.
+Mirrors the embed.js script-tag integration as importable ES modules.
+
+```ts
+import { renderBadge } from "@certifieddata/embed";
+await renderBadge(document.getElementById("badge"), { certId: "...", variant: "inline" });
+```
+
+### @certifieddata/badge-types
+Shared TypeScript types for badge API responses and widget configuration.
+Used by @certifieddata/embed and partner integrations.
+
+## REST API
+
+Base URL: https://certifieddata.io
+
+### Certificate manifest (signed payload + signature)
+GET /api/cert/:id/manifest
+Accept: application/certifieddata.manifest+json
+Returns the signed envelope for independent verification.
+
+### Public signing keys
+GET /.well-known/signing-keys.json
+Returns active Ed25519 public keys used to sign certificates.
+
+### Badge data
+GET /api/badge/:id
+Returns rich badge metadata: status, hashes, artifact name, verification URL.
+CORS-enabled for cross-origin embed use.
+
+### Badge analytics tracking
+POST /api/badge/:id/track
+Body: { event_type, source_url, install_type }
+Fire-and-forget impression/click tracking for embedded badges.
+
+### Certificate verification status
+GET /verify/:id/status
+Returns server-side verification result including revocation status.
+
+Full OpenAPI spec: /openapi/openapi.yaml
+
+## Verification flow
+
+1. Fetch signed manifest from GET /api/cert/:id/manifest
+2. Fetch public signing keys from GET /.well-known/signing-keys.json
+3. Find the key matching signature.key_id
+4. Assert key.status === "active"
+5. Canonicalize payload: strip undefined, sort keys alphabetically, JSON.stringify
+6. Verify Ed25519 signature over canonical payload bytes
+7. Result: verified: true/false + reason if false
+
+## Certificate schema
+
+A signed certificate envelope looks like:
+
+```json
+{
+  "schema_version": "certifieddata.manifest.v1",
+  "payload": {
+    "schema_version": "cert.v2",
+    "certificate_id": "UUID",
+    "certificate_type": "GENESIS",
+    "issued_at": "ISO-8601",
+    "issuer": {
+      "name": "CertifiedData.io",
+      "environment": "production",
+      "signing_key_id": "key-id",
+      "signature_alg": "Ed25519"
+    },
+    "subject": {
+      "dataset_name": "...",
+      "org_id": "...",
+      "user_id": "..."
+    },
+    "hashes": {
+      "certificate_payload_sha256": "hex",
+      "datasets": {
+        "filename.csv": {
+          "sha256": "hex",
+          "size_bytes": 12345,
+          "row_count": 100000
+        }
+      }
+    }
+  },
+  "signature": {
+    "alg": "Ed25519",
+    "key_id": "key-id",
+    "value": "base64-encoded-signature"
+  }
+}
+```
+
+## Schema versions
+
+- cert.v1 — initial schema (deprecated, still verifiable)
+- cert.v2 — current schema (active)
+
+## Examples
+
+- examples/node-verify/ — Node.js verification using @certifieddata/verify
+- examples/node-fetch-and-verify/ — SDK convenience wrapper
+- examples/ci-verify/ — Standalone CI shell script, no npm install required
+- examples/browser-verify/ — Zero-dependency HTML + Web Crypto API verification
+- examples/python-verify/ — Python verification using cryptography library
+- examples/embed-script/ — Script tag badge installation
+- examples/embed-iframe/ — Iframe badge installation
+
+## Links
+
+- Platform: https://certifieddata.io
+- Registry: https://certifieddata.io/registry
+- API docs: https://certifieddata.io/docs/api
+- OpenAPI: https://github.com/certifieddata/certifieddata-public/blob/main/openapi/openapi.yaml
+- npm: https://www.npmjs.com/org/certifieddata

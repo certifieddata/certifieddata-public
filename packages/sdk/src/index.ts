@@ -1,5 +1,13 @@
 export { CertifiedDataClient } from "./client.js";
-export type { SigningKey, SigningKeysResponse, VerifyStatusResponse } from "./types.js";
+export type {
+  SigningKey,
+  SigningKeysResponse,
+  VerifyStatusResponse,
+  SignedPayloadResponse,
+  RegistryEntriesResponse,
+  RegistryEntry,
+  HashVerifyResult,
+} from "./types.js";
 export { verifyManifest, canonicalPayloadBytes } from "@certifieddata/verify";
 export type {
   CertifiedDataManifestEnvelope,

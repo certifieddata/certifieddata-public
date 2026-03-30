@@ -1,26 +1,26 @@
 /**
- * Example: Fetch a SDAAS certificate manifest from the live API
+ * Example: Fetch a CertifiedData certificate manifest from the live API
  * and independently verify the Ed25519 signature.
  *
  * Usage:
- *   SDAAS_CERT_ID=<cert-id> node index.mjs
+ *   CERTIFIEDDATA_CERT_ID=<cert-id> node index.mjs
  *
  * Optional env vars:
- *   SDAAS_BASE_URL  — defaults to https://sdaas.io
+ *   CERTIFIEDDATA_BASE_URL  — defaults to https://certifieddata.io
  */
 
-import { SdaasClient } from "@sdaas/sdk";
+import { CertifiedDataClient } from "@certifieddata/sdk";
 
-const certId = process.env.SDAAS_CERT_ID;
-const baseUrl = process.env.SDAAS_BASE_URL ?? "https://sdaas.io";
+const certId = process.env.CERTIFIEDDATA_CERT_ID;
+const baseUrl = process.env.CERTIFIEDDATA_BASE_URL ?? "https://certifieddata.io";
 
 if (!certId) {
-  console.error("Error: set SDAAS_CERT_ID environment variable");
-  console.error("  Example: SDAAS_CERT_ID=<your-cert-id> node index.mjs");
+  console.error("Error: set CERTIFIEDDATA_CERT_ID environment variable");
+  console.error("  Example: CERTIFIEDDATA_CERT_ID=<your-cert-id> node index.mjs");
   process.exit(1);
 }
 
-const client = new SdaasClient(baseUrl);
+const client = new CertifiedDataClient(baseUrl);
 
 console.log(`\nCert ID : ${certId}`);
 console.log(`Base URL: ${baseUrl}\n`);

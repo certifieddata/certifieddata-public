@@ -38,12 +38,12 @@ export function isDeprecatedSchemaVersion(version: string): boolean {
 
 // ── Certificate payload types ──────────────────────────────────────────────────
 
-/** Payload that was signed by CertifiedData.io */
+/** Payload that was signed by CertifiedData.io (matches the manifest API response shape) */
 export interface CertificatePayload {
-  /** Certificate UUID */
-  certification_id: string;
-  /** ISO-8601 timestamp of issuance */
-  timestamp: string;
+  /** Certificate UUID — matches `certificate_id` in the manifest API */
+  certificate_id: string;
+  /** ISO-8601 timestamp of issuance — matches `issued_at` in the manifest API */
+  issued_at: string;
   /** Issuing authority */
   issuer: string;
   /** SHA-256 hash of the certified dataset, with algorithm prefix */
@@ -51,9 +51,9 @@ export interface CertificatePayload {
   /** Generation algorithm used (e.g. "CTGAN") */
   algorithm: string;
   /** Row count of the synthetic dataset */
-  rows: number;
+  rows?: number;
   /** Column count of the synthetic dataset */
-  columns: number;
+  columns?: number;
   /** Schema version of this certificate format */
   schema_version: SchemaVersion;
   /** Optional: dataset name / title */
@@ -64,7 +64,7 @@ export interface CertificatePayload {
   metadata?: Record<string, unknown>;
 }
 
-/** Full signed certificate envelope (matches SdaasManifestEnvelope from @certifieddata/verify) */
+/** Full signed certificate envelope (matches the manifest API response) */
 export interface SignedCertificateEnvelope {
   payload: CertificatePayload;
   signature: {
@@ -100,8 +100,8 @@ export function parseCertificatePayload(
   const p = raw as Record<string, unknown>;
 
   const required: (keyof CertificatePayload)[] = [
-    "certification_id",
-    "timestamp",
+    "certificate_id",
+    "issued_at",
     "issuer",
     "dataset_hash",
     "algorithm",
@@ -135,20 +135,20 @@ export const CERTIFICATE_PAYLOAD_JSON_SCHEMA = {
     "The payload object that is canonicalized and signed by CertifiedData.io using Ed25519.",
   type: "object",
   required: [
-    "certification_id",
-    "timestamp",
+    "certificate_id",
+    "issued_at",
     "issuer",
     "dataset_hash",
     "algorithm",
     "schema_version",
   ],
   properties: {
-    certification_id: {
+    certificate_id: {
       type: "string",
       format: "uuid",
       description: "UUID of the certificate",
     },
-    timestamp: {
+    issued_at: {
       type: "string",
       format: "date-time",
       description: "ISO-8601 timestamp of issuance",

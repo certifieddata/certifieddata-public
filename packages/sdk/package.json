@@ -17,6 +17,12 @@
     "test": "node --test",
     "lint": "node -e \"process.exit(0)\""
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@certifieddata/verify": "workspace:*"
   },

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CertifiedData — Browser Certificate Verification</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f1117;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .container { max-width: 680px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #f9fafb; margin-bottom: 0.25rem; }
+    .subtitle { color: #9ca3af; font-size: 0.9rem; margin-bottom: 2rem; }
+    label { display: block; font-size: 0.875rem; color: #9ca3af; margin-bottom: 0.375rem; font-weight: 500; }
+    input {
+      width: 100%;
+      background: #1e2130;
+      border: 1px solid #374151;
+      border-radius: 6px;
+      color: #f3f4f6;
+      padding: 0.6rem 0.875rem;
+      font-size: 0.9rem;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+    input:focus { border-color: #6366f1; }
+    button {
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button:hover:not(:disabled) { background: #4338ca; }
+    .result {
+      margin-top: 1.5rem;
+      border-radius: 8px;
+      padding: 1.25rem;
+      font-size: 0.875rem;
+      display: none;
+    }
+    .result.visible { display: block; }
+    .result.verified { background: #052e16; border: 1px solid #16a34a; }
+    .result.failed   { background: #450a0a; border: 1px solid #dc2626; }
+    .result.loading  { background: #1c1f2e; border: 1px solid #374151; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    .badge.ok  { background: #16a34a; color: #fff; }
+    .badge.bad { background: #dc2626; color: #fff; }
+    .badge.info { background: #374151; color: #d1d5db; }
+    .field { margin-bottom: 0.5rem; }
+    .field .k { color: #9ca3af; display: inline-block; width: 160px; }
+    .field .v { color: #f3f4f6; font-family: monospace; font-size: 0.85rem; }
+    .field .v.mono-hash { word-break: break-all; }
+    .error-msg { color: #f87171; margin-top: 0.5rem; }
+    .note { font-size: 0.78rem; color: #6b7280; margin-top: 1.5rem; }
+    a { color: #818cf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid #1f2937; margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Certificate Verification</h1>
+    <p class="subtitle">
+      Cryptographically verify a CertifiedData certificate — runs entirely in your browser
+      using the Web Crypto API. No data leaves your machine except to fetch the public manifest
+      and signing keys from <code>certifieddata.io</code>.
+    </p>
+
+    <label for="certId">Certificate ID (UUID)</label>
+    <input
+      id="certId"
+      type="text"
+      placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
+      autocomplete="off"
+      spellcheck="false"
+    />
+
+    <button id="verifyBtn" onclick="runVerify()">Verify Certificate</button>
+
+    <div id="result" class="result loading">
+      <span class="badge info">Checking…</span>
+      <div id="resultBody"></div>
+    </div>
+
+    <hr>
+    <p class="note">
+      This page performs independent Ed25519 signature verification using the
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/verify" target="_blank">Web Crypto API</a>
+      (<code>SubtleCrypto.verify</code>). The signed manifest is fetched from
+      <a href="https://certifieddata.io/.well-known/signing-keys.json" target="_blank">certifieddata.io</a>
+      along with the public signing key. The signature is verified locally — no trust in the
+      server response is required.
+      <br><br>
+      Source: <a href="https://github.com/certifieddata/certifieddata-public/tree/main/examples/browser-verify" target="_blank">
+        certifieddata-public/examples/browser-verify
+      </a>
+    </p>
+  </div>
+
+<script type="module">
+// ── Canonicalization ─────────────────────────────────────────────────────────
+
+function sortedKeys(obj) {
+  if (obj === null || typeof obj !== "object") return obj;
+  if (Array.isArray(obj)) return obj.map(sortedKeys);
+  const out = {};
+  for (const k of Object.keys(obj).sort()) {
+    if (obj[k] !== undefined) out[k] = sortedKeys(obj[k]);
+  }
+  return out;
+}
+
+function canonicalize(payload) {
+  return JSON.stringify(sortedKeys(payload));
+}
+
+// ── PEM → CryptoKey (Ed25519 via SubtleCrypto) ───────────────────────────────
+
+function pemToBytes(pem) {
+  const b64 = pem
+    .replace(/-----BEGIN [^-]+-----/, "")
+    .replace(/-----END [^-]+-----/, "")
+    .replace(/\s+/g, "");
+  const bin = atob(b64);
+  return Uint8Array.from(bin, c => c.charCodeAt(0));
+}
+
+async function importEd25519PublicKey(pem) {
+  const raw = pemToBytes(pem);
+  // SubjectPublicKeyInfo for Ed25519 has a 12-byte header; last 32 bytes are the raw key
+  const keyBytes = raw.slice(-32);
+  return crypto.subtle.importKey("raw", keyBytes, { name: "Ed25519" }, false, ["verify"]);
+}
+
+// ── Main verification ────────────────────────────────────────────────────────
+
+async function verifyCert(certId) {
+  const BASE = "https://certifieddata.io";
+
+  const [manifestRes, keysRes] = await Promise.all([
+    fetch(`${BASE}/api/cert/${certId}/manifest`, {
+      headers: { Accept: "application/certifieddata.manifest+json" },
+    }),
+    fetch(`${BASE}/.well-known/signing-keys.json`),
+  ]);
+
+  if (!manifestRes.ok) throw new Error(`Manifest fetch failed: HTTP ${manifestRes.status}`);
+  if (!keysRes.ok)     throw new Error(`Signing-keys fetch failed: HTTP ${keysRes.status}`);
+
+  const envelope = await manifestRes.json();
+  const keysDoc  = await keysRes.json();
+
+  const { payload, signature } = envelope;
+  const { alg, key_id, value: sigB64 } = signature ?? {};
+
+  if (alg !== "Ed25519") throw new Error(`Unsupported algorithm: ${alg}`);
+  if (!sigB64)           throw new Error("Signature value is null");
+
+  const signingKey = keysDoc.keys?.find(k => k.key_id === key_id);
+  if (!signingKey) throw new Error(`No public key for key_id="${key_id}"`);
+  if (signingKey.status !== "active") throw new Error(`Key "${key_id}" is ${signingKey.status}`);
+
+  const canonical     = canonicalize(payload);
+  const payloadBytes  = new TextEncoder().encode(canonical);
+  const sigBytes      = Uint8Array.from(atob(sigB64), c => c.charCodeAt(0));
+
+  const cryptoKey = await importEd25519PublicKey(signingKey.public_key_pem);
+  const verified  = await crypto.subtle.verify("Ed25519", cryptoKey, sigBytes, payloadBytes);
+
+  return { verified, payload, signature, key_id, alg };
+}
+
+// ── UI ────────────────────────────────────────────────────────────────────────
+
+window.runVerify = async function() {
+  const certId = document.getElementById("certId").value.trim();
+  if (!certId) {
+    alert("Please enter a certificate ID.");
+    return;
+  }
+
+  const btn    = document.getElementById("verifyBtn");
+  const result = document.getElementById("result");
+  const body   = document.getElementById("resultBody");
+
+  btn.disabled = true;
+  result.className = "result loading visible";
+  result.querySelector(".badge").textContent = "Checking…";
+  body.innerHTML = "";
+
+  try {
+    const { verified, payload, signature, key_id, alg } = await verifyCert(certId);
+
+    result.className = verified ? "result verified visible" : "result failed visible";
+    result.querySelector(".badge").className = verified ? "badge ok" : "badge bad";
+    result.querySelector(".badge").textContent = verified ? "✓ VERIFIED" : "✗ FAILED";
+
+    body.innerHTML = `
+      <div class="field"><span class="k">Certificate ID</span> <span class="v">${certId}</span></div>
+      <div class="field"><span class="k">Algorithm</span>       <span class="v">${alg ?? "—"}</span></div>
+      <div class="field"><span class="k">Key ID</span>          <span class="v">${key_id ?? "—"}</span></div>
+      <div class="field"><span class="k">Issued at</span>       <span class="v">${payload?.issued_at ?? "—"}</span></div>
+      <div class="field"><span class="k">Issuer</span>          <span class="v">${payload?.issuer?.name ?? payload?.issuer ?? "—"}</span></div>
+      <div class="field"><span class="k">Dataset</span>         <span class="v">${payload?.subject?.dataset_name ?? payload?.dataset_name ?? "—"}</span></div>
+      <div class="field"><span class="k">Schema version</span>  <span class="v">${payload?.schema_version ?? "—"}</span></div>
+    `;
+
+    if (!verified) {
+      body.innerHTML += `<div class="error-msg">Signature verification failed — payload may have been tampered with.</div>`;
+    }
+  } catch (err) {
+    result.className = "result failed visible";
+    result.querySelector(".badge").className = "badge bad";
+    result.querySelector(".badge").textContent = "✗ ERROR";
+    body.innerHTML = `<div class="error-msg">${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+};
+</script>
+</body>
+</html>
