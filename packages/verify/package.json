@@ -14,7 +14,7 @@
   "files": ["dist", "!dist/*.test.js", "!dist/*.test.d.ts", "!dist/*.test.js.map", "!dist/*.test.d.ts.map", "README.md"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --test dist/index.test.js",
+    "test": "tsc -p tsconfig.json && node --test dist/verify.test.js",
     "lint": "node -e \"process.exit(0)\""
   },
   "engines": {

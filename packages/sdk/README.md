@@ -15,9 +15,9 @@ pnpm add @certifieddata/sdk
 ## Quick start
 
 ```ts
-import { SdaasClient } from "@certifieddata/sdk";
+import { CertifiedDataClient } from "@certifieddata/sdk";
 
-const client = new SdaasClient("https://certifieddata.io");
+const client = new CertifiedDataClient("https://certifieddata.io");
 
 // Fetch + independently verify in one call
 const { manifest, result } = await client.fetchAndVerify("<CERT_ID>");
@@ -27,7 +27,7 @@ console.log(result);
 
 ## API
 
-### `new SdaasClient(baseUrl?)`
+### `new CertifiedDataClient(baseUrl?)`
 
 Creates a client. `baseUrl` defaults to `"https://certifieddata.io"`.
 
@@ -73,7 +73,7 @@ const { manifest, result } = await client.fetchAndVerify("<CERT_ID>");
 `@certifieddata/sdk` re-exports `verifyManifest` and types from `@certifieddata/verify`:
 
 ```ts
-import { verifyManifest, SdaasManifestEnvelope } from "@certifieddata/sdk";
+import { verifyManifest, CertifiedDataManifestEnvelope } from "@certifieddata/sdk";
 ```
 
 ## License

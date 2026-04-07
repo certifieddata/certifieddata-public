@@ -32,11 +32,11 @@ Every manifest response includes a signature envelope:
 
 ## Payload (`cert.v1` schema)
 
-The `payload` object follows the `sdaas.cert.v1` JSON Schema:
+The `payload` object follows the `certifieddata.cert.v1` JSON Schema:
 
 ```json
 {
-  "schema_version": "sdaas.cert.v1",
+  "schema_version": "certifieddata.cert.v1",
   "cert_id": "uuid",
   "issued_at": "2025-06-01T12:00:00.000Z",
   "issuer": "CertifiedData.io",
@@ -71,7 +71,7 @@ The `payload` object follows the `sdaas.cert.v1` JSON Schema:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `schema_version` | string | Always `"sdaas.cert.v1"` |
+| `schema_version` | string | Always `"certifieddata.cert.v1"` |
 | `cert_id` | string (UUID) | Unique certificate identifier |
 | `issued_at` | string (ISO 8601) | Issuance timestamp |
 | `issuer` | string | Always `"CertifiedData.io"` |

@@ -20,7 +20,7 @@ import { verifyManifest } from "@certifieddata/verify";
 // 1. Fetch the manifest envelope from CertifiedData
 const envelope = await fetch(
   "https://certifieddata.io/api/cert/<CERT_ID>/manifest",
-  { headers: { Accept: "application/sdaas.manifest+json" } }
+  { headers: { Accept: "application/certifieddata.manifest+json" } }
 ).then(r => r.json());
 
 // 2. Fetch the public signing key
@@ -73,7 +73,7 @@ Canonicalization: `json-stable-stringify(stripUndefined(payload))` → UTF-8 byt
 
 ```json
 {
-  "schema_version": "sdaas.manifest.v1",
+  "schema_version": "certifieddata.manifest.v1",
   "payload": {
     "schema_version": "cert.v1",
     "certificate_id": "...",

@@ -9,6 +9,16 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Planned
+
+- `@certifieddata/pii-scan` v0.2.0 — SARIF output, recursive directory scanning, ignore/config file
+- `@certifieddata/verify` v0.2.0 — revocation check support, key-set pinning helper
+- `@certifieddata/sdk` v0.2.0 — `verifyManifestFile()` for locally downloaded artifact archives
+- `@certifieddata/cli` — standalone CLI verifier package (zero npm deps, portable)
+- Browser-compatible build of `@certifieddata/verify` (no Node.js `crypto` dependency)
+- Additional language examples: Go, Rust
+- NDJSON, TSV support in `@certifieddata/pii-scan`
+
 ---
 
 ## [0.1.0] — 2026-02-23

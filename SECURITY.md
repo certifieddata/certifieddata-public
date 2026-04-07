@@ -14,6 +14,7 @@ This policy covers:
 - `@certifieddata/verify` — signature verification and canonicalization logic
 - `@certifieddata/sdk` — API client and manifest fetching
 - `@certifieddata/schema-gen` — manifest scaffolding
+- `@certifieddata/pii-scan` — local PII scanner (see also [packages/pii-scan/SECURITY.md](packages/pii-scan/SECURITY.md))
 
 **Out of scope:**
 - The CertifiedData.io web platform — report to security@certifieddata.io

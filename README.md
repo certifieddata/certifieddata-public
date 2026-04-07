@@ -13,6 +13,7 @@ Independent Ed25519 verification — no API key required, no server trust requir
 | [`@certifieddata/verify`](packages/verify/) | `npm i @certifieddata/verify` | Ed25519 signature verification + payload canonicalization |
 | [`@certifieddata/sdk`](packages/sdk/) | `npm i @certifieddata/sdk` | Fetch + verify in one call |
 | [`@certifieddata/schema-gen`](packages/schema-gen/) | `npm i @certifieddata/schema-gen` | Dataset manifest scaffolding CLI |
+| [`@certifieddata/pii-scan`](packages/pii-scan/) | `npx @certifieddata/pii-scan <file>` | Scan CSV/JSON for PII patterns before synthetic generation. Local-only — no network calls. |
 
 ---
 
@@ -86,7 +87,7 @@ Verification is fully offline once you have the manifest envelope and public key
 
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/cert/:id/manifest` | Signed manifest envelope (`application/sdaas.manifest+json`) |
+| `GET /api/cert/:id/manifest` | Signed manifest envelope (`application/certifieddata.manifest+json`) |
 | `GET /verify/:id/status` | Server-side verification status (JSON) |
 | `GET /.well-known/signing-keys.json` | Active Ed25519 public keys |
 
@@ -104,6 +105,19 @@ git clone https://github.com/certifieddata/certifieddata-public.git
 cd certifieddata-public && pnpm install && pnpm build
 cd examples/node-verify && node index.mjs valid
 ```
+
+---
+
+## Workflow
+
+These packages cover three points in the synthetic data lifecycle:
+
+1. **Scan for PII** — run `@certifieddata/pii-scan` on source datasets before use in lower environments
+2. **Generate certified synthetic data** — use [CertifiedData.io](https://certifieddata.io) to replace PII columns with signed, verifiable synthetic equivalents
+3. **Verify the certificate** — use `@certifieddata/verify` or `@certifieddata/sdk` to confirm the artifact independently
+
+Each step is independent. You do not need a CertifiedData account to verify a certificate.
+Verification works offline once you have the manifest envelope and public key.
 
 ---
 
