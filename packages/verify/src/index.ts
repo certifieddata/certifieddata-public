@@ -29,6 +29,7 @@ import { verifyEd25519Pem } from "./ed25519.js";
 import { validateEnvelopeShape } from "./validate.js";
 
 export type { SdaasManifestEnvelope, SdaasCertPayload, SdaasSignature, VerifyResult } from "./types.js";
+export type { CertifiedDataManifestEnvelope, CertifiedDataCertPayload, CertifiedDataSignature } from "./types.js";
 export { canonicalPayloadBytes } from "./canon.js";
 
 /**
