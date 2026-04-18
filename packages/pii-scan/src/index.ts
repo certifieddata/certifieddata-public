@@ -18,5 +18,13 @@
 
 export { scanContent, scanColumns } from "./scanner.js";
 export { PII_PATTERNS, SUSPICIOUS_COLUMN_NAMES } from "./patterns.js";
+export { buildHandoff, handoffContinueUrl } from "./handoff.js";
+export { buildSarif } from "./sarif.js";
 export type { ScanResult, ColumnFinding } from "./scanner.js";
 export type { RiskLevel, PiiPattern } from "./patterns.js";
+export type {
+  HandoffSummary,
+  HandoffColumnSummary,
+  BuildHandoffOptions,
+} from "./handoff.js";
+export type { SarifLog, BuildSarifOptions } from "./sarif.js";

@@ -19,8 +19,8 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
-    "test": "tsc -p tsconfig.json && node --test dist/scanner.test.js dist/cli.test.js",
-    "test:unit": "node --test dist/scanner.test.js",
+    "test": "tsc -p tsconfig.json && node --test dist/scanner.test.js dist/cli.test.js dist/handoff.test.js dist/sarif.test.js",
+    "test:unit": "node --test dist/scanner.test.js dist/handoff.test.js dist/sarif.test.js",
     "test:cli": "node --test dist/cli.test.js",
     "prepublishOnly": "pnpm run build && pnpm run typecheck && pnpm run test"
   },

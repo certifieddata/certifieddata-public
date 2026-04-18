@@ -31,6 +31,15 @@ import { validateEnvelopeShape } from "./validate.js";
 export type { SdaasManifestEnvelope, SdaasCertPayload, SdaasSignature, VerifyResult } from "./types.js";
 export type { CertifiedDataManifestEnvelope, CertifiedDataCertPayload, CertifiedDataSignature } from "./types.js";
 export { canonicalPayloadBytes } from "./canon.js";
+export {
+  verifyManifestFile,
+  verifyBundleDirectory,
+  verifyBundleZip,
+} from "./bundle.js";
+export type {
+  VerifyFileOptions,
+  VerifyBundleOptions,
+} from "./bundle.js";
 
 /**
  * Verify a CertifiedData certificate manifest envelope.
