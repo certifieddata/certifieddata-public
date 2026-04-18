@@ -1,6 +1,20 @@
 # certifieddata-public
 
-Verification and integration toolkit for [CertifiedData.io](https://certifieddata.io) synthetic dataset certificates.
+Developer toolkit for [CertifiedData.io](https://certifieddata.io) — a
+three-step workflow to move from raw data to certified synthetic data to
+independent verification.
+
+```bash
+# 1. Detect PII locally (no network)
+npx @certifieddata/cli pii-scan ./customers.csv --emit-handoff --output-handoff handoff.json
+
+# 2. Hand off to the certified-synthetic workflow
+#    (opens a browser — no file contents are uploaded by this CLI)
+npx @certifieddata/cli generate --handoff handoff.json
+
+# 3. Verify the resulting certificate bundle, fully offline
+npx @certifieddata/cli verify ./certificate-bundle.zip
+```
 
 Independent Ed25519 verification — no API key required, no server trust required.
 
@@ -10,10 +24,11 @@ Independent Ed25519 verification — no API key required, no server trust requir
 
 | Package | Install | Description |
 |---------|---------|-------------|
-| [`@certifieddata/verify`](packages/verify/) | `npm i @certifieddata/verify` | Ed25519 signature verification + payload canonicalization |
+| [`@certifieddata/cli`](packages/cli/) | `npm i -g @certifieddata/cli` | Unified CLI — `pii-scan`, `generate` (handoff), `verify` |
+| [`@certifieddata/verify`](packages/verify/) | `npm i @certifieddata/verify` | Ed25519 signature verification + payload canonicalization + offline bundle verification |
 | [`@certifieddata/sdk`](packages/sdk/) | `npm i @certifieddata/sdk` | Fetch + verify in one call |
 | [`@certifieddata/schema-gen`](packages/schema-gen/) | `npm i @certifieddata/schema-gen` | Dataset manifest scaffolding CLI |
-| [`@certifieddata/pii-scan`](packages/pii-scan/) | `npx @certifieddata/pii-scan <file>` | Scan CSV/JSON for PII patterns before synthetic generation. Local-only — no network calls. |
+| [`@certifieddata/pii-scan`](packages/pii-scan/) | `npx @certifieddata/pii-scan <file>` | Scan CSV/JSON for PII patterns before synthetic generation. Local-only — no network calls. Now supports SARIF 2.1.0 output and sanitized handoff artifacts. |
 
 ---
 
@@ -112,12 +127,23 @@ cd examples/node-verify && node index.mjs valid
 
 These packages cover three points in the synthetic data lifecycle:
 
-1. **Scan for PII** — run `@certifieddata/pii-scan` on source datasets before use in lower environments
-2. **Generate certified synthetic data** — use [CertifiedData.io](https://certifieddata.io) to replace PII columns with signed, verifiable synthetic equivalents
-3. **Verify the certificate** — use `@certifieddata/verify` or `@certifieddata/sdk` to confirm the artifact independently
+1. **Scan for PII** — `@certifieddata/pii-scan` flags likely personal data
+   and can emit a sanitized handoff summary or SARIF findings for CI.
+2. **Generate certified synthetic data** — `@certifieddata/cli generate`
+   opens the hosted generation workflow in a browser with a sanitized
+   handoff. **No file contents leave your machine through this CLI.** To
+   complete generation, sign in on the web or use the documented public
+   API directly with your API key.
+3. **Verify the certificate** — `@certifieddata/verify` /
+   `@certifieddata/sdk` / `@certifieddata/cli verify` confirm the artifact
+   independently, including offline verification of an unpacked or zipped
+   bundle.
 
 Each step is independent. You do not need a CertifiedData account to verify a certificate.
 Verification works offline once you have the manifest envelope and public key.
+
+See [`docs/pricing.md`](docs/pricing.md) for the local vs. hosted boundary
+and [`docs/compliance.md`](docs/compliance.md) for a compliance crosswalk.
 
 ---
 

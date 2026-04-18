@@ -1,0 +1,47 @@
+{
+  "name": "@certifieddata/cli",
+  "version": "0.1.0",
+  "description": "Unified CertifiedData.io command-line — pii-scan, generate (handoff), verify",
+  "type": "module",
+  "bin": {
+    "certifieddata": "dist/cli.js"
+  },
+  "main": "dist/cli.js",
+  "types": "dist/cli.d.ts",
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "tsc -p tsconfig.json && node --test dist/cli.test.js",
+    "lint": "node -e \"process.exit(0)\""
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@certifieddata/pii-scan": "workspace:*",
+    "@certifieddata/verify": "workspace:*",
+    "@certifieddata/sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  },
+  "keywords": [
+    "certifieddata",
+    "cli",
+    "pii",
+    "synthetic-data",
+    "verify",
+    "certificate"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/certifieddata/certifieddata-public.git",
+    "directory": "packages/cli"
+  }
+}

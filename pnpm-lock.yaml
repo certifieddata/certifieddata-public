@@ -20,6 +20,47 @@ importers:
         specifier: workspace:*
         version: link:../../packages/verify
 
+  packages/badge-types:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/cli:
+    dependencies:
+      '@certifieddata/pii-scan':
+        specifier: workspace:*
+        version: link:../pii-scan
+      '@certifieddata/sdk':
+        specifier: workspace:*
+        version: link:../sdk
+      '@certifieddata/verify':
+        specifier: workspace:*
+        version: link:../verify
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/embed:
+    dependencies:
+      '@certifieddata/badge-types':
+        specifier: workspace:*
+        version: link:../badge-types
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
   packages/pii-scan:
     devDependencies:
       '@types/node':
@@ -39,6 +80,15 @@ importers:
         version: 5.9.3
 
   packages/schema-gen:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/schemas:
     devDependencies:
       '@types/node':
         specifier: ^20.0.0

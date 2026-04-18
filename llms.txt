@@ -16,6 +16,19 @@ It contains:
 
 ## Core packages
 
+### @certifieddata/cli
+Unified command-line entrypoint. Wraps @certifieddata/pii-scan and @certifieddata/verify
+with a three-step developer flow: detect PII, hand off to generation, verify the result.
+
+```bash
+certifieddata pii-scan customers.csv --emit-handoff --output-handoff handoff.json
+certifieddata generate --handoff handoff.json    # opens browser handoff URL
+certifieddata verify ./bundle.zip                # offline bundle verification
+```
+
+The `generate` subcommand never uploads datasets. It opens a pre-filled web URL
+carrying only aggregate counts (risk level, finding count, column count).
+
 ### @certifieddata/verify
 Verify a CertifiedData certificate manifest using Ed25519 signature verification.
 Supports: Node.js 18+, browser (Web Crypto API), Deno, Bun.

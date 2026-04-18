@@ -9,15 +9,39 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Added
+
+- `@certifieddata/cli` — unified top-level CLI package. Subcommands:
+  `pii-scan`, `generate` (web handoff only, no proprietary API surface),
+  `verify` (offline manifest / directory / zip), `registry`.
+- `@certifieddata/pii-scan`
+  - `--emit-handoff` / `--output-handoff <path>` — sanitized handoff JSON
+    carrying only aggregate counts, column names, and risk labels. Never
+    includes raw samples or values.
+  - `--open-generate` — open a continue-generation URL in a browser. The
+    URL carries only aggregate counts.
+  - `--sarif` — SARIF 2.1.0 output compatible with GitHub Code Scanning.
+  - Library exports: `buildHandoff`, `handoffContinueUrl`, `buildSarif`.
+- `@certifieddata/verify`
+  - `verifyManifestFile(path, opts)` — offline verification of a manifest
+    JSON file using a locally-supplied PEM.
+  - `verifyBundleDirectory(dir, opts)` — offline verification of an
+    unpacked bundle directory.
+  - `verifyBundleZip(zipPath, opts)` — offline verification of a zipped
+    bundle (STORE + DEFLATE). Zero new runtime dependencies — uses
+    Node's built-in `zlib`.
+- `docs/pricing.md` — local vs. hosted boundary and evaluation path.
+- `docs/compliance.md` — compliance crosswalk (SOC 2, GDPR, HIPAA, CCPA,
+  EU AI Act). Support-only framing, not a certification.
+
 ### Planned
 
-- `@certifieddata/pii-scan` v0.2.0 — SARIF output, recursive directory scanning, ignore/config file
-- `@certifieddata/verify` v0.2.0 — revocation check support, key-set pinning helper
-- `@certifieddata/sdk` v0.2.0 — `verifyManifestFile()` for locally downloaded artifact archives
-- `@certifieddata/cli` — standalone CLI verifier package (zero npm deps, portable)
-- Browser-compatible build of `@certifieddata/verify` (no Node.js `crypto` dependency)
-- Additional language examples: Go, Rust
-- NDJSON, TSV support in `@certifieddata/pii-scan`
+- Python port of `@certifieddata/pii-scan` with matching findings schema.
+- Go verifier example for platform/enterprise buyers.
+- NDJSON and Parquet input in `@certifieddata/pii-scan`.
+- International PII patterns (UK NINO, EU VAT, AU TFN, CA SIN, IN Aadhaar).
+- Revocation check + key-set pinning helpers in `@certifieddata/verify`.
+- Browser-compatible build of `@certifieddata/verify` (no Node.js `crypto` dependency).
 
 ---
 
